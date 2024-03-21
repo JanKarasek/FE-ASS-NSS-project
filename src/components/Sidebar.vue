@@ -1,41 +1,64 @@
 <template>
-  <v-card>
-      <v-navigation-drawer permanent theme="light">
-        <v-list-item>
-          <div class="text-center py-4">
-            <img src="@/assets/logo_en.jpg" alt="Logo" class="logo">
-          </div>
-        </v-list-item>
-        <v-list>
-          <v-list-item prepend-icon="mdi-view-dashboard-outline" title="Dashboard" :to="{ name: 'dashboard' }"></v-list-item>
-          <v-list-item prepend-icon="mdi-history" title="History" :to="{ name: 'history' }"></v-list-item>
-          <v-list-item prepend-icon="mdi-chart-line" title="Measurements" :to="{ name: 'measurements' }"> </v-list-item>
-          <v-list-item prepend-icon="mdi-cog-outline" title= "Settings" :to="{ name: 'settings' }"></v-list-item>
-        </v-list>
-        <template v-slot:append>
-          <div class="pa-4">
-             <v-list-item
-                prepend-icon="mdi-account-circle-outline"
-                title= "Miroslav Jaroš"
-            ></v-list-item>
-          </div>
-        </template>
-      </v-navigation-drawer>
-  </v-card>
+	<v-card>
+		<v-navigation-drawer :rail="isSmallScreen" permanent class="tw-bg-gray-50">
+			<v-list-item-media>
+				<img
+					v-if="!isSmallScreen"
+					src="@/assets/logo_en.png"
+					alt="Logo"
+					class="logo"
+				/>
+				<img v-else src="@/assets/logo_mini.png" alt="Logo" class="logo" />
+			</v-list-item-media>
+			<v-list>
+				<v-list-item
+					prepend-icon="mdi-view-dashboard-outline"
+					title="Dashboard"
+					:to="{ name: 'dashboard' }"
+				></v-list-item>
+				<v-list-item
+					prepend-icon="mdi-history"
+					title="History"
+					:to="{ name: 'history' }"
+				></v-list-item>
+				<v-list-item
+					prepend-icon="mdi-chart-line"
+					title="Measurements"
+					:to="{ name: 'measurements' }"
+				>
+				</v-list-item>
+				<v-list-item
+					prepend-icon="mdi-cog-outline"
+					title="Settings"
+					:to="{ name: 'settings' }"
+				></v-list-item>
+			</v-list>
+			<template v-slot:append>
+				<div
+					class="tw-w-auto tw-bg-gray-100 tw-p-2 tw-border-t-2 tw-border-gray-300"
+				>
+					<v-list-item
+						prepend-icon="mdi-account-circle-outline"
+						title="Miroslav Jaroš"
+					></v-list-item>
+				</div>
+			</template>
+		</v-navigation-drawer>
+	</v-card>
 </template>
 
-<script>
-export default {
-  name: "Sidebar",
-  data() {
-    return {};
-  },
-};
-</script>
+<script setup>
+import { ref } from 'vue';
 
+const isSmallScreen = ref(window.innerWidth < 960);
+
+window.addEventListener('resize', () => {
+	isSmallScreen.value = window.innerWidth < 960;
+});
+</script>
 <style scoped>
 .logo {
-  max-width: 100%;
-  height: auto;
+	max-width: 100%;
+	height: auto;
 }
 </style>

@@ -1,61 +1,48 @@
 <template>
-  <v-app>
-    <Sidebar />
-    <v-main>
-      <v-container>
-      
-        <router-view/>
-      </v-container>
-    </v-main>
-  </v-app>
+	<v-app>
+		<Sidebar />
+		<v-main>
+			<v-container>
+				<router-view />
+			</v-container>
+		</v-main>
+	</v-app>
 </template>
 
-
-<script>
+<script setup>
 import { Icon } from '@iconify/vue';
-import {defineComponent} from "vue";
-import Sidebar from "@/components/Sidebar.vue";
+import Sidebar from '@/components/Sidebar.vue';
+//import { useUserStore } from './stores/UserStore';
+import { useRouter } from 'vue-router';
 
-export default defineComponent({
-  components: {Sidebar, Icon}
-})
-
+defineExpose({ Sidebar, Icon });
+const router = useRouter();
 /*
-import { useUserStore } from "./stores/UserStore";
-import { mapStores } from "pinia/dist/pinia";
+const userStore = useUserStore();
 
-export default {
-  name: "App",
-  data() {
-    return {
-    };
-  },
+const router = useRouter();
 
-  computed: {
-    ...mapStores(useUserStore),
-  },
-
-  methods: {
-    login() {
-     // this.$router.push({ name: "login" });
-     // this.userMenuShown = false;
-    },
-    logout() {
-     // this.userStore.logout();
-     // this.$router.push({ name: "home" });
-     // this.userMenuShown = false;
-    },
-  },
+const login = () => {
+	router.push({ name: 'login' });
 };
- */
+
+const logout = () => {
+	userStore.logout();
+	router.push({ name: 'home' });
+};
+
+defineExpose({ login, logout });
+*/
 </script>
 
 <style scoped>
 nav {
-  margin-bottom: 1em;
+	margin-bottom: 1em;
 }
 
- html, body, .v-application {
-   font-family: 'Be Vietnam Pro', sans-serif !important;
- }
+html,
+body,
+.v-application {
+	font-family: 'Be Vietnam Pro', sans-serif !important;
+}
 </style>

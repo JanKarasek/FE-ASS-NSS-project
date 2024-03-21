@@ -1,32 +1,32 @@
 <template>
-
-  <h1 class="d-flex align-center mb-4">
-    Settings
-  </h1>
+	<h1 class="d-flex align-center mb-4">Settings</h1>
 </template>
 
-<script>
-import { mapStores } from "pinia/dist/pinia";
-import Error from "../components/Error.vue";
-import Sidebar from "@/App.vue";
+<script setup>
+import { ref } from 'vue';
 
-export default {
-  name: "Settings",
+// Dummy data array
+const measurements = ref([
+	{ date: '19.3.2024 14:00', sensors: 6, rgb: 'Ano', multispectral: 'Ano' },
+	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
+	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
+	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
+	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
+	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
+	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
+	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
+]);
 
-  components: {
-    Sidebar,
-    Error,
-  },
-  data() {
-    return {};
-  },
-  created() {},
-  computed: {
-    ...mapStores(
-    ),
-  },
+const headers = [
+	{ text: 'Datum a čas', value: 'date' },
+	{ text: 'Počet senzorů', value: 'sensors' },
+	{ text: 'RGB', value: 'rgb' },
+	{ text: 'Multispectral', value: 'multispectral' },
+	{ text: 'Stáhnout data', value: 'actions', sortable: false },
+];
 
-  methods: {},
+const downloadData = (item) => {
+	console.log('Downloading data for', item.date);
 };
 </script>
 
