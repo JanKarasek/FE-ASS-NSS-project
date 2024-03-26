@@ -35,14 +35,14 @@ defineExpose({ login, logout });
 */
 </script>
 
-<style scoped>
-nav {
-	margin-bottom: 1em;
+<style>
+/*GLOBAL STYLES*/
+
+h1 {
+    font-size: 24px;
 }
 
-html,
-body,
-.v-application {
-	font-family: 'Be Vietnam Pro', sans-serif !important;
+nav {
+	margin-bottom: 1em;
 }
 </style>
