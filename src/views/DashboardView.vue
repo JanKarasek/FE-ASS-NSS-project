@@ -61,9 +61,7 @@
                                 </v-col>
                                 <v-spacer></v-spacer>
                                 <v-col class="tw-flex tw-justify-end">
-                                    <v-btn class="tw-bg-mendelu-green tw-rounded-2xl tw-text-white" size="large">
-                                        Zahájit měření
-                                    </v-btn>
+                                    <PrimaryButton text="Zahájit měření" size="large"/>
                                 </v-col>
                             </v-row>
 						</v-card>
@@ -92,12 +90,7 @@
 									<td>{{ item.rgb }}</td>
 									<td>{{ item.multispectral }}</td>
 									<td>
-										<v-btn
-											class="tw-bg-mendelu-green tw-rounded-2xl tw-text-white"
-											prepend-icon="mdi-download"
-											@click="downloadData(item)"
-											>Stáhnout</v-btn
-										>
+										<PrimaryButton text="Stáhnout" icon="mdi-download"/>
 									</td>
 								</tr>
 							</tbody>
@@ -111,6 +104,7 @@
 
 <script setup>
 import { ref } from 'vue';
+import PrimaryButton from "@/components/button/PrimaryButton.vue";
 
 // Dummy data array
 const measurements = ref([
