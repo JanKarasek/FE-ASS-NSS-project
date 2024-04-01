@@ -35,7 +35,7 @@
 			</v-list>
 			<template v-slot:append>
 				<div
-					class="tw-w-auto tw-bg-gray-100 tw-p-2 tw-border-t-2 tw-border-gray-300"
+					class="tw-w-auto tw-bg-gray-100 tw-border-t-2 tw-border-gray-300"
 				>
 					<v-list-item
 						prepend-icon="mdi-account-circle-outline"

@@ -55,7 +55,17 @@
 				<v-row>
 					<v-col>
 						<v-card class="pa-4">
-							<v-card-title>Nové měření</v-card-title>
+                            <v-row class="tw-flex tw-justify-center tw-items-center">
+                                <v-col>
+							        <v-card-title>Nové měření</v-card-title>
+                                </v-col>
+                                <v-spacer></v-spacer>
+                                <v-col class="tw-flex tw-justify-end">
+                                    <v-btn class="tw-bg-mendelu-green tw-rounded-2xl tw-text-white" size="large">
+                                        Zahájit měření
+                                    </v-btn>
+                                </v-col>
+                            </v-row>
 						</v-card>
 					</v-col>
 				</v-row>
@@ -83,7 +93,7 @@
 									<td>{{ item.multispectral }}</td>
 									<td>
 										<v-btn
-											class="tw-bg-mendelu-green tw-rounded-full text-white"
+											class="tw-bg-mendelu-green tw-rounded-2xl tw-text-white"
 											prepend-icon="mdi-download"
 											@click="downloadData(item)"
 											>Stáhnout</v-btn

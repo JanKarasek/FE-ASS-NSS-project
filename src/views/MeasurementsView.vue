@@ -1,5 +1,15 @@
 <template>
-	<h1 class="d-flex align-center mb-4">Measurements</h1>
+    <v-app>
+        <v-main>
+            <v-container>
+                <v-row>
+                    <v-col>
+                        <div class="tw-text-2xl">Measurements</div>
+                    </v-col>
+                </v-row>
+            </v-container>
+        </v-main>
+    </v-app>
 </template>
 
 <script setup>

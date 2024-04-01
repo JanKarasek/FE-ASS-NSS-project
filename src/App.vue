@@ -36,11 +36,6 @@ defineExpose({ login, logout });
 </script>
 
 <style>
-/*GLOBAL STYLES*/
-
-h1 {
-    font-size: 24px;
-}
 
 nav {
 	margin-bottom: 1em;
