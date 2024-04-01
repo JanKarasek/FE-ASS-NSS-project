@@ -40,7 +40,6 @@
 					<v-list-item
 						prepend-icon="mdi-account-circle-outline"
 						title="Miroslav Jaroš"
-                        :to="{ name: '' }"
 					></v-list-item>
 				</div>
 			</template>
