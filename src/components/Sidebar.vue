@@ -1,6 +1,6 @@
 <template>
 	<v-card>
-		<v-navigation-drawer :rail="isSmallScreen" permanent class="tw-bg-gray-50">
+		<v-navigation-drawer :rail="isSmallScreen" permanent>
 			<v-list-item-media>
 				<img
 					v-if="!isSmallScreen"
@@ -35,11 +35,12 @@
 			</v-list>
 			<template v-slot:append>
 				<div
-					class="tw-w-auto tw-bg-gray-100 tw-border-t-2 tw-border-gray-300"
+					class="tw-w-auto tw-border-t-2 tw-border-light-grey"
 				>
 					<v-list-item
 						prepend-icon="mdi-account-circle-outline"
 						title="Miroslav Jaroš"
+                        :to="{ name: '' }"
 					></v-list-item>
 				</div>
 			</template>

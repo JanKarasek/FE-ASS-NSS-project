@@ -11,7 +11,7 @@
 					<v-col cols="auto">
 						<v-card
 							variant="flat"
-							class="mx-auto tw-bg-gray-300"
+							class="mx-auto tw-bg-light-grey"
 							max-width="auto"
 						>
 							<v-card-item>
@@ -25,7 +25,7 @@
 					<v-col cols="auto">
 						<v-card
 							variant="flat"
-							class="mx-auto tw-bg-gray-300"
+							class="mx-auto tw-bg-light-grey"
 							max-width="auto"
 						>
 							<v-card-item>
@@ -39,7 +39,7 @@
 					<v-col cols="auto">
 						<v-card
 							variant="flat"
-							class="mx-auto tw-bg-gray-300"
+							class="mx-auto tw-bg-light-grey"
 							max-width="auto"
 						>
 							<v-card-item>
