@@ -55,15 +55,49 @@
 				<v-row>
 					<v-col>
 						<v-card class="pa-4">
-                            <v-row class="tw-flex tw-justify-center tw-items-center">
-                                <v-col>
-							        <v-card-title>Nové měření</v-card-title>
-                                </v-col>
-                                <v-spacer></v-spacer>
-                                <v-col class="tw-flex tw-justify-end">
-                                    <PrimaryButton text="Zahájit měření" size="large"/>
-                                </v-col>
-                            </v-row>
+							<v-row class="tw-flex tw-justify-between tw-items-center">
+								<v-col>
+									<v-card-title class="tw-pl-1">Nové měření</v-card-title>
+									<v-card-text
+										@click="toggleSettings"
+										class="tw-cursor-pointer tw-pl-1"
+									>
+										{{ showSettings ? 'Zobrazit méně' : 'Upravit nastavení' }}
+										<v-icon>{{
+											showSettings ? 'mdi-chevron-up' : 'mdi-chevron-down'
+										}}</v-icon>
+									</v-card-text>
+								</v-col>
+
+								<v-col class="tw-flex tw-justify-end">
+									<PrimaryButton text="Zahájit měření" size="large" />
+								</v-col>
+							</v-row>
+
+							<v-expand-transition>
+								<div v-show="showSettings" class="pt-4">
+									<v-row>
+										<v-col cols="4">
+											<v-checkbox label="Multispektrální kamera"></v-checkbox>
+											<v-text-field
+												class="tw-pl-3"
+												label="Délka měření akustické emise"
+												placeholder="Zadejte délku v minutách"
+												variant="underlined"
+											></v-text-field>
+										</v-col>
+										<v-col cols="4" offset="2">
+											<v-checkbox label="RGB kamera"></v-checkbox>
+											<v-select
+												variant="underlined"
+												label="Počet senzorů"
+												:items="['1', '2', '3', '4', '5', '6']"
+												placeholder="Vyberte počet"
+											></v-select>
+										</v-col>
+									</v-row>
+								</div>
+							</v-expand-transition>
 						</v-card>
 					</v-col>
 				</v-row>
@@ -76,6 +110,11 @@
 							class="elevation-1"
 							title="Poslední měření"
 						>
+							<template v-slot:top>
+								<v-toolbar flat dense class="tw-bg-white">
+									<v-toolbar-title>Poslední měření </v-toolbar-title>
+								</v-toolbar>
+							</template>
 							<thead>
 								<tr>
 									<th v-for="header in headers" :key="header.text">
@@ -90,7 +129,7 @@
 									<td>{{ item.rgb }}</td>
 									<td>{{ item.multispectral }}</td>
 									<td>
-										<PrimaryButton text="Stáhnout" icon="mdi-download"/>
+										<PrimaryButton text="Stáhnout" />
 									</td>
 								</tr>
 							</tbody>
@@ -104,7 +143,7 @@
 
 <script setup>
 import { ref } from 'vue';
-import PrimaryButton from "@/components/button/PrimaryButton.vue";
+import PrimaryButton from '@/components/button/PrimaryButton.vue';
 
 // Dummy data array
 const measurements = ref([
@@ -126,6 +165,11 @@ const headers = [
 	{ text: 'Stáhnout data', value: 'actions', sortable: false },
 ];
 
+const showSettings = ref(false);
+
+function toggleSettings() {
+	showSettings.value = !showSettings.value;
+}
 const downloadData = (item) => {
 	console.log('Downloading data for', item.date);
 };

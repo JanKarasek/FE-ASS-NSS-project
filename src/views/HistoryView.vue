@@ -1,22 +1,102 @@
 <template>
-    <v-app>
-        <v-main>
-            <v-container>
-                <v-row>
-                    <v-col>
-                        <div class="tw-text-2xl">History</div>
-                    </v-col>
-                </v-row>
-            </v-container>
-        </v-main>
-    </v-app>
+	<v-app>
+		<v-main>
+			<v-container>
+				<v-row>
+					<v-col>
+						<div class="tw-text-2xl">History</div>
+					</v-col>
+				</v-row>
+				<v-row>
+					<v-col>
+						<SecondaryButton
+							text="Vybrat datum"
+							icon="mdi-calendar-range"
+							size="large"
+						/>
+					</v-col>
+				</v-row>
+
+				<v-row>
+					<v-col>
+						<v-data-table
+							:headers="headers"
+							:items="measurements"
+							class="elevation-1"
+							title="Poslední měření"
+						>
+							<template v-slot:top>
+								<v-toolbar flat dense class="tw-bg-white">
+									<v-toolbar-title
+										>Měření v intervalu 19.3.2024 - 24.3.2024
+									</v-toolbar-title>
+								</v-toolbar>
+							</template>
+							<thead>
+								<tr>
+									<th v-for="header in headers" :key="header.text">
+										{{ header.text }}
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr v-for="item in measurements" :key="item.name">
+									<td>{{ item.date }}</td>
+									<td>{{ item.sensors }}</td>
+									<td>{{ item.rgb }}</td>
+									<td>{{ item.multispectral }}</td>
+									<td>
+										<PrimaryButton text="Stáhnout" />
+									</td>
+								</tr>
+							</tbody>
+						</v-data-table>
+					</v-col>
+				</v-row>
+			</v-container>
+		</v-main>
+	</v-app>
 </template>
 
 <script setup>
 import { ref } from 'vue';
+import PrimaryButton from '@/components/button/PrimaryButton.vue';
+import SecondaryButton from '@/components/button/SecondaryButton.vue';
 
 // Dummy data array
 const measurements = ref([
+	{ date: '19.3.2024 14:00', sensors: 6, rgb: 'Ano', multispectral: 'Ano' },
+	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
+	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
+	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
+	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
+	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
+	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
+	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
+	{ date: '19.3.2024 14:00', sensors: 6, rgb: 'Ano', multispectral: 'Ano' },
+	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
+	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
+	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
+	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
+	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
+	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
+	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
+	{ date: '19.3.2024 14:00', sensors: 6, rgb: 'Ano', multispectral: 'Ano' },
+	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
+	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
+	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
+	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
+	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
+	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
+	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
+	{ date: '19.3.2024 14:00', sensors: 6, rgb: 'Ano', multispectral: 'Ano' },
+	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
+	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
+	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
+	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
+	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
+	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
+	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
 	{ date: '19.3.2024 14:00', sensors: 6, rgb: 'Ano', multispectral: 'Ano' },
 	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
 	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
