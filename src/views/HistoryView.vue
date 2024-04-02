@@ -21,7 +21,6 @@
 					<v-col>
 						<v-data-table
 							:headers="headers"
-							:items="measurements"
 							class="elevation-1"
 							title="Poslední měření"
 						>
@@ -40,7 +39,7 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr v-for="item in measurements" :key="item.name">
+								<tr v-for="item in pagedMeasurements" :key="item.name">
 									<td>{{ item.date }}</td>
 									<td>{{ item.sensors }}</td>
 									<td>{{ item.rgb }}</td>
@@ -50,7 +49,18 @@
 									</td>
 								</tr>
 							</tbody>
+							<template v-slot:bottom> </template>
 						</v-data-table>
+						<div class="text-center pt-2">
+							<v-pagination
+								v-model="page"
+								:length="pageCount"
+								:total-visible="totalVisible"
+								prev-icon="mdi-chevron-left"
+								next-icon="mdi-chevron-right"
+							></v-pagination>
+							<div class="tw-text-dark-grey tw-text-xs">{{ rangeText }}</div>
+						</div>
 					</v-col>
 				</v-row>
 			</v-container>
@@ -59,7 +69,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import PrimaryButton from '@/components/button/PrimaryButton.vue';
 import SecondaryButton from '@/components/button/SecondaryButton.vue';
 
@@ -114,6 +124,24 @@ const headers = [
 	{ text: 'Multispectral', value: 'multispectral' },
 	{ text: 'Stáhnout data', value: 'actions', sortable: false },
 ];
+
+const page = ref(1);
+const itemsPerPage = 15;
+const totalVisible = 4;
+
+const totalItems = computed(() => measurements.value.length);
+const pageCount = computed(() => Math.ceil(totalItems.value / itemsPerPage));
+
+const pagedMeasurements = computed(() => {
+	const startIndex = (page.value - 1) * itemsPerPage;
+	return measurements.value.slice(startIndex, startIndex + itemsPerPage);
+});
+
+const rangeText = computed(() => {
+	const startIndex = (page.value - 1) * itemsPerPage + 1;
+	const endIndex = Math.min(page.value * itemsPerPage, totalItems.value);
+	return `${startIndex}-${endIndex} z ${totalItems.value}`;
+});
 
 const downloadData = (item) => {
 	console.log('Downloading data for', item.date);

@@ -1,9 +1,5 @@
 <template>
-	<v-btn
-		@click="onClick"
-		class="tw-bg-mendelu-green tw-rounded-2xl tw-text-white tw-normal-case"
-		:size="size"
-	>
+	<v-btn @click="onClick" :class="buttonClass" :size="size">
 		<template v-if="icon">
 			<v-icon>{{ icon }}</v-icon>
 		</template>
@@ -11,21 +7,22 @@
 	</v-btn>
 </template>
 
-<script>
-export default {
-	name: 'PrimaryButton',
+<script setup>
+import { defineProps, defineEmits } from 'vue';
 
-	props: {
-		text: String,
-		icon: String,
-		size: String,
-	},
+const props = defineProps({
+	text: String,
+	icon: String,
+	size: String,
+});
 
-	methods: {
-		onClick() {
-			this.$emit('click');
-		},
-	},
+const emit = defineEmits(['click']);
+
+const buttonClass =
+	'tw-bg-mendelu-green tw-rounded-2xl tw-text-white tw-normal-case';
+
+const onClick = () => {
+	emit('click');
 };
 </script>
 

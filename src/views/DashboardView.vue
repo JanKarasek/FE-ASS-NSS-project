@@ -78,7 +78,10 @@
 								<div v-show="showSettings" class="pt-4">
 									<v-row>
 										<v-col cols="4">
-											<v-checkbox label="Multispektrální kamera"></v-checkbox>
+											<v-checkbox
+												label="Multispektrální kamera"
+												color="#77BE13"
+											></v-checkbox>
 											<v-text-field
 												class="tw-pl-3"
 												label="Délka měření akustické emise"
@@ -87,7 +90,10 @@
 											></v-text-field>
 										</v-col>
 										<v-col cols="4" offset="2">
-											<v-checkbox label="RGB kamera"></v-checkbox>
+											<v-checkbox
+												label="RGB kamera"
+												color="#77BE13"
+											></v-checkbox>
 											<v-select
 												variant="underlined"
 												label="Počet senzorů"
@@ -105,10 +111,12 @@
 				<v-row>
 					<v-col>
 						<v-data-table
+							v-model:page="page"
+							:items-per-page="itemsPerPage"
 							:headers="headers"
 							:items="measurements"
-							class="elevation-1"
 							title="Poslední měření"
+							class="elevation-1"
 						>
 							<template v-slot:top>
 								<v-toolbar flat dense class="tw-bg-white">
@@ -123,7 +131,7 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr v-for="item in measurements" :key="item.name">
+								<tr v-for="item in displayedMeasurements" :key="item.name">
 									<td>{{ item.date }}</td>
 									<td>{{ item.sensors }}</td>
 									<td>{{ item.rgb }}</td>
@@ -133,6 +141,7 @@
 									</td>
 								</tr>
 							</tbody>
+							<template v-slot:bottom> </template>
 						</v-data-table>
 					</v-col>
 				</v-row>
@@ -142,8 +151,11 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import PrimaryButton from '@/components/button/PrimaryButton.vue';
+
+const page = 1;
+const itemsPerPage = 5;
 
 // Dummy data array
 const measurements = ref([
@@ -173,6 +185,14 @@ function toggleSettings() {
 const downloadData = (item) => {
 	console.log('Downloading data for', item.date);
 };
+
+const displayedMeasurements = computed(() => {
+	return measurements.value.slice(0, itemsPerPage);
+});
+
+function pageCount() {
+	return Math.ceil(measurements.value.length / itemsPerPage);
+}
 </script>
 
 <style scoped></style>
