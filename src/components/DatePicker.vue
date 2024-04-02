@@ -1,10 +1,9 @@
 <template>
     <v-date-picker
         v-model="selectedDate"
-        locale="cs"
+        location="cs"
         :min="minDate"
         :max="maxDate"
-        color="#65a61a"
     ></v-date-picker>
 </template>
 
