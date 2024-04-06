@@ -6,9 +6,15 @@
 					v-if="!isSmallScreen"
 					src="@/assets/logo_en.png"
 					alt="Logo"
-					class="logo"
+					class="logo-default"
+					height="64px"
 				/>
-				<img v-else src="@/assets/logo_mini.png" alt="Logo" class="logo" />
+				<img
+					v-else
+					src="@/assets/logo_mini.png"
+					alt="Logo"
+					class="logo-small"
+				/>
 			</v-list-item-media>
 			<v-list>
 				<v-list-item
@@ -34,9 +40,7 @@
 				></v-list-item>
 			</v-list>
 			<template v-slot:append>
-				<div
-					class="tw-w-auto tw-border-t-2 tw-border-light-grey"
-				>
+				<div class="tw-w-auto tw-border-t-2 tw-border-light-grey">
 					<v-list-item
 						prepend-icon="mdi-account-circle-outline"
 						title="Miroslav Jaroš"
@@ -56,9 +60,18 @@ window.addEventListener('resize', () => {
 	isSmallScreen.value = window.innerWidth < 960;
 });
 </script>
+
 <style scoped>
-.logo {
+.logo-small {
 	max-width: 100%;
 	height: auto;
+}
+
+.logo-default {
+	max-width: 60%;
+	height: auto;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
 }
 </style>
