@@ -70,7 +70,7 @@
 								</v-col>
 
 								<v-col class="tw-flex tw-justify-end">
-									<PrimaryButton text="Zahájit měření" size="large" />
+									<LoadingButton text="Zahájit měření" loading-text="Probíhá měření" size="large" />
 								</v-col>
 							</v-row>
 
@@ -104,15 +104,6 @@
 									</v-row>
 								</div>
 							</v-expand-transition>
-                            <v-row class="tw-flex tw-justify-center tw-items-center">
-                                <v-col>
-							        <v-card-title>Nové měření</v-card-title>
-                                </v-col>
-                                <v-spacer></v-spacer>
-                                <v-col class="tw-flex tw-justify-end">
-                                    <LoadingButton text="Začít měření" ref="loadingButton" loadingText="Probíhá měření"/>
-                                </v-col>
-                            </v-row>
 						</v-card>
 					</v-col>
 				</v-row>
@@ -161,11 +152,8 @@
 
 <script setup>
 import { computed, ref } from 'vue';
-import PrimaryButton from '@/components/button/PrimaryButton.vue';
-
 const page = 1;
 const itemsPerPage = 5;
-import { ref } from 'vue';
 import PrimaryButton from "@/components/button/PrimaryButton.vue";
 import DatePicker from "@/components/DatePicker.vue";
 import LoadingButton from "@/components/button/LoadingButton.vue";
