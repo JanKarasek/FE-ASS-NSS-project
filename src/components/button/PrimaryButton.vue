@@ -1,5 +1,5 @@
 <template>
-	<v-btn @click="onClick" :class="buttonClass" :size="size">
+	<v-btn @click="onClick" :class="[buttonClass, bgColor]" :size="size">
 		<template v-if="icon">
 			<v-icon>{{ icon }}</v-icon>
 		</template>
@@ -14,12 +14,16 @@ const props = defineProps({
 	text: String,
 	icon: String,
 	size: String,
+    bgColor: {
+        type: String,
+        default: 'tw-bg-mendelu-green'
+    }
 });
 
 const emit = defineEmits(['click']);
 
 const buttonClass =
-	'tw-bg-mendelu-green tw-rounded-2xl tw-text-white tw-normal-case';
+	'tw-rounded-2xl tw-text-white tw-normal-case';
 
 const onClick = () => {
 	emit('click');
