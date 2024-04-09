@@ -61,7 +61,7 @@
                                 </v-col>
                                 <v-spacer></v-spacer>
                                 <v-col class="tw-flex tw-justify-end">
-                                    <PrimaryButton text="Zahájit měření" size="large"/>
+                                    <LoadingButton text="Začít měření" ref="loadingButton" loadingText="Probíhá měření"/>
                                 </v-col>
                             </v-row>
 						</v-card>
@@ -105,6 +105,8 @@
 <script setup>
 import { ref } from 'vue';
 import PrimaryButton from "@/components/button/PrimaryButton.vue";
+import DatePicker from "@/components/DatePicker.vue";
+import LoadingButton from "@/components/button/LoadingButton.vue";
 
 // Dummy data array
 const measurements = ref([
