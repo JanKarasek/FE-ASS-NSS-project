@@ -1,33 +1,29 @@
 <template>
-    <v-btn
-        @click="onClick"
-        class="tw-bg-light-grey tw-rounded-2xl tw-text-white"
-        :size="size"
-    >
-        <template v-if="icon">
-            <v-icon>{{ icon }}</v-icon>
-        </template>
-        {{ text }}
-    </v-btn>
+	<v-btn @click="onClick" :class="buttonClass" :size="size">
+		<template v-if="icon">
+			<v-icon>{{ icon }}</v-icon>
+		</template>
+		{{ text }}
+	</v-btn>
 </template>
 
-<script>
-export default {
-    name: "SecondaryButton",
+<script setup>
+import { defineProps, defineEmits } from 'vue';
 
-    props: {
-        text: String,
-        icon: String,
-        size: String,
-    },
+const props = defineProps({
+	text: String,
+	icon: String,
+	size: String,
+});
 
-    methods: {
-        onClick() {
-            this.$emit("click");
-        },
-    },
+const emit = defineEmits(['click']);
+
+const buttonClass =
+	'tw-bg-light-grey tw-rounded-2xl tw-text-black tw-normal-case';
+
+const onClick = () => {
+	emit('click');
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

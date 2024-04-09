@@ -11,6 +11,8 @@ export default {
 			colors: {
 				'mendelu-green': '#77BE13',
 				'light-grey': '#EDEDED',
+				'very-dark-grey': '#2C2C2C',
+				'dark-grey': '#525252',
 			},
 		},
 	},

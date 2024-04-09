@@ -1,26 +1,26 @@
 <template>
-  <v-alert type="error"
-    >{{ text }}
+	<v-alert type="error">
+		{{ text }}
 
-    <button @click="onHideClick"><v-icon>mdi-eye-off</v-icon></button>
-  </v-alert>
+		<button @click="onHideClick">
+			<v-icon>mdi-eye-off</v-icon>
+		</button>
+	</v-alert>
 </template>
 
-<script>
-export default {
-  name: "Error",
+<script setup>
+import { defineProps, defineEmits } from 'vue';
 
-  props: {
-    text: {
-      type: String,
-      required: true,
-    },
-  },
+const props = defineProps({
+	text: {
+		type: String,
+		required: true,
+	},
+});
 
-  methods: {
-    onHideClick() {
-      this.$emit("hide");
-    },
-  },
+const emit = defineEmits(['hide']);
+
+const onHideClick = () => {
+	emit('hide');
 };
 </script>

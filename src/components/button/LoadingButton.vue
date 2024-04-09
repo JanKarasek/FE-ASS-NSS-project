@@ -1,7 +1,7 @@
 <template>
     <v-btn
         @click="onClick"
-        class="tw-bg-mendelu-green tw-rounded-2xl tw-text-white"
+        class="tw-bg-mendelu-green tw-rounded-2xl tw-text-white tw-normal-case"
         :size="size"
         :disabled="loading"
     >
@@ -26,17 +26,16 @@ export default {
 
     data() {
         return {
-            loading: false, // Stav načítání
+            loading: false,
         };
     },
 
     methods: {
         onClick() {
-            this.loading = true; // Nastaví stav načítání na true při kliknutí
+            this.loading = true;
             this.$emit("click");
         },
         setLoadingState(newState) {
-            // Metoda pro nastavení stavu načítání
             this.loading = newState;
         }
     },
