@@ -9,25 +9,18 @@
 				</v-row>
 				<v-row>
 					<v-col>
-						<SecondaryButton
-							text="Vybrat datum"
-							icon="mdi-calendar-range"
-							size="large"
-						/>
+						<DateTimePickerRange v-model:startDate="defaultStartDate" v-model:endDate="defaultEndDate" />
 					</v-col>
 				</v-row>
 
 				<v-row>
 					<v-col>
-						<v-data-table
-							:headers="headers"
-							class="elevation-1"
-							title="Poslední měření"
-						>
+						<v-data-table :headers="headers" class="elevation-1" title="Poslední měření">
 							<template v-slot:top>
 								<v-toolbar flat dense class="tw-bg-white">
-									<v-toolbar-title
-										>Měření v intervalu 19.3.2024 - 24.3.2024
+									<v-toolbar-title>Měření v intervalu {{
+							moment(defaultStartDate).format('DD.MM.YYYY HH:mm:ss') }} - {{
+							moment(defaultEndDate).format('DD.MM.YYYY HH:mm:ss') }}
 									</v-toolbar-title>
 								</v-toolbar>
 							</template>
@@ -52,13 +45,8 @@
 							<template v-slot:bottom> </template>
 						</v-data-table>
 						<div class="text-center pt-2">
-							<v-pagination
-								v-model="page"
-								:length="pageCount"
-								:total-visible="totalVisible"
-								prev-icon="mdi-chevron-left"
-								next-icon="mdi-chevron-right"
-							></v-pagination>
+							<v-pagination v-model="page" :length="pageCount" :total-visible="totalVisible"
+								prev-icon="mdi-chevron-left" next-icon="mdi-chevron-right"></v-pagination>
 							<div class="tw-text-dark-grey tw-text-xs">{{ rangeText }}</div>
 						</div>
 					</v-col>
@@ -71,7 +59,8 @@
 <script setup>
 import { computed, ref } from 'vue';
 import PrimaryButton from '@/components/button/PrimaryButton.vue';
-import SecondaryButton from '@/components/button/SecondaryButton.vue';
+import DateTimePickerRange from '@/components/datepickers/DateTimePickerRange.vue';
+import moment from 'moment';
 
 // Dummy data array
 const measurements = ref([
@@ -142,6 +131,13 @@ const rangeText = computed(() => {
 	const endIndex = Math.min(page.value * itemsPerPage, totalItems.value);
 	return `${startIndex}-${endIndex} z ${totalItems.value}`;
 });
+
+// start date is 7 days ago
+const defaultStartDate = ref(new Date());
+defaultStartDate.value.setDate(defaultStartDate.value.getDate() - 7);
+
+// end date is now
+const defaultEndDate = ref(new Date());
 
 const downloadData = (item) => {
 	console.log('Downloading data for', item.date);
