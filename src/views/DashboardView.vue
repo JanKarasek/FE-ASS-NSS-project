@@ -9,19 +9,13 @@
 				</v-row>
 				<v-row align="start" justify="start">
 					<v-col cols="auto">
-						<MeasurementWidget
-							title="Poslední záloha"
-							:datetime=firstDate />
+						<MeasurementWidget title="Poslední záloha" :datetime=firstDate />
 					</v-col>
 					<v-col cols="auto">
-						<MeasurementWidget
-							title="Poslední měření"
-							:datetime=secondDate />
+						<MeasurementWidget title="Poslední měření" :datetime=secondDate />
 					</v-col>
 					<v-col cols="auto">
-						<MeasurementWidget
-							title="Plánované měření"
-							:datetime=thirdDate />
+						<MeasurementWidget title="Plánované měření" :datetime=thirdDate />
 					</v-col>
 				</v-row>
 
@@ -31,14 +25,11 @@
 							<v-row class="tw-flex tw-justify-between tw-items-center">
 								<v-col>
 									<v-card-title class="tw-pl-1">Nové měření</v-card-title>
-									<v-card-text
-										@click="toggleSettings"
-										class="tw-cursor-pointer tw-pl-1"
-									>
+									<v-card-text @click="toggleSettings" class="tw-cursor-pointer tw-pl-1">
 										{{ showSettings ? 'Zobrazit méně' : 'Upravit nastavení' }}
 										<v-icon>{{
-											showSettings ? 'mdi-chevron-up' : 'mdi-chevron-down'
-										}}</v-icon>
+							showSettings ? 'mdi-chevron-up' : 'mdi-chevron-down'
+						}}</v-icon>
 									</v-card-text>
 								</v-col>
 
@@ -49,32 +40,7 @@
 
 							<v-expand-transition>
 								<div v-show="showSettings" class="pt-4">
-									<v-row>
-										<v-col cols="4">
-											<v-checkbox
-												label="Multispektrální kamera"
-												color="#77BE13"
-											></v-checkbox>
-											<v-text-field
-												class="tw-pl-3"
-												label="Délka měření akustické emise"
-												placeholder="Zadejte délku v minutách"
-												variant="underlined"
-											></v-text-field>
-										</v-col>
-										<v-col cols="4" offset="2">
-											<v-checkbox
-												label="RGB kamera"
-												color="#77BE13"
-											></v-checkbox>
-											<v-select
-												variant="underlined"
-												label="Počet senzorů"
-												:items="['1', '2', '3', '4', '5', '6']"
-												placeholder="Vyberte počet"
-											></v-select>
-										</v-col>
-									</v-row>
+									<MeasurementSettings />
 								</div>
 							</v-expand-transition>
 						</v-card>
@@ -83,14 +49,8 @@
 
 				<v-row>
 					<v-col>
-						<v-data-table
-							v-model:page="page"
-							:items-per-page="itemsPerPage"
-							:headers="headers"
-							:items="measurements"
-							title="Poslední měření"
-							class="elevation-1"
-						>
+						<v-data-table v-model:page="page" :items-per-page="itemsPerPage" :headers="headers"
+							:items="measurements" title="Poslední měření" class="elevation-1">
 							<template v-slot:top>
 								<v-toolbar flat dense class="tw-bg-white">
 									<v-toolbar-title>Poslední měření </v-toolbar-title>
@@ -130,6 +90,7 @@ const itemsPerPage = 5;
 import PrimaryButton from "@/components/button/PrimaryButton.vue";
 import LoadingButton from "@/components/button/LoadingButton.vue";
 import MeasurementWidget from "@/components/measurements/MeasurementWidget.vue";
+import MeasurementSettings from "@/components/measurements/MeasurementSettings.vue";
 import moment from 'moment';
 
 const firstDate = moment('19.3.2024 13:30', 'DD.MM.YYYY HH:mm');
