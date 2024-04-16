@@ -9,46 +9,19 @@
 				</v-row>
 				<v-row align="start" justify="start">
 					<v-col cols="auto">
-						<v-card
-							variant="flat"
-							class="mx-auto tw-bg-light-grey"
-							max-width="auto"
-						>
-							<v-card-item>
-								<div>
-									<div class="text-overline mb-1">Poslední záloha</div>
-									<div class="text-h6 mb-1">19.3.2024 13:30</div>
-								</div>
-							</v-card-item>
-						</v-card>
+						<MeasurementWidget
+							title="Poslední záloha"
+							:datetime=firstDate />
 					</v-col>
 					<v-col cols="auto">
-						<v-card
-							variant="flat"
-							class="mx-auto tw-bg-light-grey"
-							max-width="auto"
-						>
-							<v-card-item>
-								<div>
-									<div class="text-overline mb-1">Poslední měření</div>
-									<div class="text-h6 mb-1">19.3.2024 11:30</div>
-								</div>
-							</v-card-item>
-						</v-card>
+						<MeasurementWidget
+							title="Poslední měření"
+							:datetime=secondDate />
 					</v-col>
 					<v-col cols="auto">
-						<v-card
-							variant="flat"
-							class="mx-auto tw-bg-light-grey"
-							max-width="auto"
-						>
-							<v-card-item>
-								<div>
-									<div class="text-overline mb-1">Plánované měření</div>
-									<div class="text-h6 mb-1">30.3.2024 13:30</div>
-								</div>
-							</v-card-item>
-						</v-card>
+						<MeasurementWidget
+							title="Plánované měření"
+							:datetime=thirdDate />
 					</v-col>
 				</v-row>
 
@@ -155,8 +128,13 @@ import { computed, ref } from 'vue';
 const page = 1;
 const itemsPerPage = 5;
 import PrimaryButton from "@/components/button/PrimaryButton.vue";
-import DatePicker from "@/components/DatePicker.vue";
 import LoadingButton from "@/components/button/LoadingButton.vue";
+import MeasurementWidget from "@/components/measurements/MeasurementWidget.vue";
+import moment from 'moment';
+
+const firstDate = moment('19.3.2024 13:30', 'DD.MM.YYYY HH:mm');
+const secondDate = moment('19.3.2024 11:30', 'DD.MM.YYYY HH:mm');
+const thirdDate = moment('30.3.2024 13:30', 'DD.MM.YYYY HH:mm');
 
 // Dummy data array
 const measurements = ref([
