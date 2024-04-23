@@ -12,20 +12,20 @@
                         <div class="tw-text-xl">Seznam uživatelů</div>
                     </v-col>
                 </v-row>
-                <v-row  v-for="(user, index) in users" :key="index">
-                    <v-col>
+                <v-row  v-for="(user, index) in users" :key="index" class="ma-0">
+                    <v-col class="pa-0">
                         <v-card
                             class="mx-auto tw-bg-light-grey mt-4"
                             variant="flat">
                                 <v-row>
                                     <v-col cols="12" sm="4">
                                         <v-card-title
-                                            class="d-flex justify-start text-center text-body-1">
-                                            <v-icon> mdi-account-circle-outline</v-icon>
+                                            class="d-flex justify-start align-center text-center text-body-1">
+                                            <v-icon class="pr-3"> mdi-account-circle-outline</v-icon>
                                             {{ user.name }}
                                         </v-card-title>
                                     </v-col>
-                                    <v-col cols="12" sm="4">
+                                    <v-col cols="12" sm="4" class="d-flex justify-start">
                                         <v-card-title class="text-center text-body-1">
                                             {{ user.role }}
                                         </v-card-title>
@@ -48,8 +48,14 @@
                 <v-row>
                     <v-col>
                         <v-text-field
+                            v-model="email"
                             label="Zadejte emailovou adresu"
-                            variant="outlined"></v-text-field>
+                            density="compact"
+                            variant="outlined"
+                            clearable
+                            :error-messages="emailError ? ['Neplatná emailová adresa'] : []"
+                            @blur="validateEmail"
+                            @click:clear="clearError"></v-text-field>
                     </v-col>
                     <v-col>
                         <PrimaryButton text="Odeslat přihlašovací email"/>
@@ -71,6 +77,22 @@ const users = ref([
     { name: 'Pavel novák', role: 'emailSent'},
 ]);
 
+
+const email = ref('');
+const emailError = ref(false);
+
+// email validation
+const validateEmail = () => {
+    console.log(email.value);
+    if (email.value !== null) {
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]*$/;
+        emailError.value = email.value !== '' && !regex.test(email.value);
+    }
+};
+
+const clearError = () => {
+    emailError.value = false;
+};
 </script>
 
 <style scoped></style>

@@ -19,7 +19,7 @@ const props = defineProps({
 const emit = defineEmits(['click']);
 
 const buttonClass =
-	'tw-bg-light-grey tw-rounded-2xl tw-text-black tw-normal-case';
+	'tw-bg-light-grey tw-rounded-xl tw-text-black tw-normal-case';
 
 const onClick = () => {
 	emit('click');

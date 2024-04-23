@@ -1,7 +1,7 @@
 <template>
     <v-btn
         @click="onClick"
-        class="tw-bg-mendelu-green tw-rounded-2xl tw-text-white tw-normal-case"
+        class="tw-bg-mendelu-green tw-rounded-xl tw-text-white tw-normal-case"
         :size="size"
         :disabled="loading"
     >
