@@ -41,6 +41,7 @@
 										text="Zahájit měření"
 										loading-text="Probíhá měření"
 										size="large"
+										@click="store.fetchLatestMeasurements()"
 									/>
 								</v-col>
 							</v-row>
@@ -78,10 +79,10 @@
 							</thead>
 							<tbody>
 								<tr v-for="item in displayedMeasurements" :key="item.name">
-									<td>{{ item.date }}</td>
-									<td>{{ item.sensors }}</td>
-									<td>{{ item.rgb }}</td>
-									<td>{{ item.multispectral }}</td>
+									<td>{{ item.dateTime }}</td>
+									<td>{{ item.numberOfSensors }}</td>
+									<td>{{ item.rgbCamera }}</td>
+									<td>{{ item.multispectralCamera }}</td>
 									<td>
 										<PrimaryButton text="Stáhnout" />
 									</td>
@@ -98,6 +99,7 @@
 
 <script setup>
 import { computed, ref } from 'vue';
+import { useMeasurementsStore } from '@/stores/MeasurementsStore.js';
 
 const page = 1;
 const itemsPerPage = 5;
@@ -107,21 +109,14 @@ import MeasurementWidget from '@/components/measurements/MeasurementWidget.vue';
 import MeasurementSettings from '@/components/measurements/MeasurementSettings.vue';
 import moment from 'moment';
 
+const store = useMeasurementsStore();
+
 const firstDate = moment('19.3.2024 13:30', 'DD.MM.YYYY HH:mm');
 const secondDate = moment('19.3.2024 11:30', 'DD.MM.YYYY HH:mm');
 const thirdDate = moment('30.3.2024 13:30', 'DD.MM.YYYY HH:mm');
 
-// Dummy data array
-const measurements = ref([
-	{ date: '19.3.2024 14:00', sensors: 6, rgb: 'Ano', multispectral: 'Ano' },
-	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
-	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
-	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
-	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
-	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
-	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
-	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
-]);
+const measurements = ref(store.latestMeasurement);
+//store.fetchLatestMeasurements();
 
 const headers = [
 	{ text: 'Datum a čas', value: 'date' },
