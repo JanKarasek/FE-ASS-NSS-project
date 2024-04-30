@@ -9,13 +9,13 @@
 				</v-row>
 				<v-row align="start" justify="start">
 					<v-col cols="auto">
-						<MeasurementWidget title="Poslední záloha" :datetime=firstDate />
+						<MeasurementWidget title="Poslední záloha" :datetime="firstDate" />
 					</v-col>
 					<v-col cols="auto">
-						<MeasurementWidget title="Poslední měření" :datetime=secondDate />
+						<MeasurementWidget title="Poslední měření" :datetime="secondDate" />
 					</v-col>
 					<v-col cols="auto">
-						<MeasurementWidget title="Plánované měření" :datetime=thirdDate />
+						<MeasurementWidget title="Plánované měření" :datetime="thirdDate" />
 					</v-col>
 				</v-row>
 
@@ -25,16 +25,23 @@
 							<v-row class="tw-flex tw-justify-between tw-items-center">
 								<v-col>
 									<v-card-title class="tw-pl-1">Nové měření</v-card-title>
-									<v-card-text @click="toggleSettings" class="tw-cursor-pointer tw-pl-1">
+									<v-card-text
+										@click="toggleSettings"
+										class="tw-cursor-pointer tw-pl-1"
+									>
 										{{ showSettings ? 'Zobrazit méně' : 'Upravit nastavení' }}
 										<v-icon>{{
-							showSettings ? 'mdi-chevron-up' : 'mdi-chevron-down'
-						}}</v-icon>
+											showSettings ? 'mdi-chevron-up' : 'mdi-chevron-down'
+										}}</v-icon>
 									</v-card-text>
 								</v-col>
 
 								<v-col class="tw-flex tw-justify-end">
-									<LoadingButton text="Zahájit měření" loading-text="Probíhá měření" size="large" />
+									<LoadingButton
+										text="Zahájit měření"
+										loading-text="Probíhá měření"
+										size="large"
+									/>
 								</v-col>
 							</v-row>
 
@@ -49,8 +56,14 @@
 
 				<v-row>
 					<v-col>
-						<v-data-table v-model:page="page" :items-per-page="itemsPerPage" :headers="headers"
-							:items="measurements" title="Poslední měření" class="elevation-1">
+						<v-data-table
+							v-model:page="page"
+							:items-per-page="itemsPerPage"
+							:headers="headers"
+							:items="measurements"
+							title="Poslední měření"
+							class="elevation-1"
+						>
 							<template v-slot:top>
 								<v-toolbar flat dense class="tw-bg-white">
 									<v-toolbar-title>Poslední měření </v-toolbar-title>
@@ -85,12 +98,13 @@
 
 <script setup>
 import { computed, ref } from 'vue';
+
 const page = 1;
 const itemsPerPage = 5;
-import PrimaryButton from "@/components/button/PrimaryButton.vue";
-import LoadingButton from "@/components/button/LoadingButton.vue";
-import MeasurementWidget from "@/components/measurements/MeasurementWidget.vue";
-import MeasurementSettings from "@/components/measurements/MeasurementSettings.vue";
+import PrimaryButton from '@/components/button/PrimaryButton.vue';
+import LoadingButton from '@/components/button/LoadingButton.vue';
+import MeasurementWidget from '@/components/measurements/MeasurementWidget.vue';
+import MeasurementSettings from '@/components/measurements/MeasurementSettings.vue';
 import moment from 'moment';
 
 const firstDate = moment('19.3.2024 13:30', 'DD.MM.YYYY HH:mm');

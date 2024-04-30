@@ -9,10 +9,10 @@
 				</v-row>
 				<v-row align="start" justify="start">
 					<v-col cols="auto">
-						<MeasurementWidget title="Poslední záloha" :datetime=firstDate />
+						<MeasurementWidget title="Poslední záloha" :datetime="firstDate" />
 					</v-col>
 					<v-col cols="auto">
-						<MeasurementWidget title="Poslední měření" :datetime=firstDate />
+						<MeasurementWidget title="Poslední měření" :datetime="firstDate" />
 					</v-col>
 				</v-row>
 				<v-row>
@@ -22,8 +22,14 @@
 				</v-row>
 				<v-row>
 					<v-col cols="4">
-						<v-text-field type="number" min="0" class="tw-pl-3" label="Doba mezi dvěma měřeními"
-							placeholder="Zadejte délku v minutách" variant="underlined"></v-text-field>
+						<v-text-field
+							type="number"
+							min="0"
+							class="tw-pl-3"
+							label="Doba mezi dvěma měřeními"
+							placeholder="Zadejte délku v minutách"
+							variant="underlined"
+						></v-text-field>
 					</v-col>
 					<v-col cols="4" offset="2">
 						<p>Datum a čas prvního měření</p>

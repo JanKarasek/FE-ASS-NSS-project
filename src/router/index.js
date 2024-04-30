@@ -3,17 +3,13 @@ import DashboardView from '../views/DashboardView.vue';
 import HistoryView from '../views/HistoryView.vue';
 import MeasurementsView from '../views/MeasurementsView.vue';
 import SettingsView from '../views/SettingsView.vue';
-import LoginView from '@/views/LoginView.vue';
+import LoginView from '../views/LoginView.vue';
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
 	routes: [
 		{
 			path: '/',
-			redirect: { name: 'dashboard' },
-		},
-		{
-			path: '/login',
 			name: 'login',
 			component: LoginView,
 		},
