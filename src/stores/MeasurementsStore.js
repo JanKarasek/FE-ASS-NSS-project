@@ -12,19 +12,10 @@ export const useMeasurementsStore = defineStore('measurements', {
 	}),
 	actions: {
 		async fetchLatestMeasurements() {
-			try {
-				const response = await axios.get(
-					`${config.backendUrl}/measurements/latest`,
-				);
-				if (response.data) {
-					this.lastBackup = response.data.lastBackup;
-					this.lastMeasurement = response.data.lastMeasurement;
-					this.plannedMeasurement = response.data.plannedMeasurement;
-					this.latestMeasurement = response.data.latestMeasurement;
-				}
-			} catch (error) {
-				console.error('Error fetching latest measurements:', error);
-			}
+			const response = await axios.get(
+				`${config.backendUrl}/measurements/latest`,
+			);
+			console.log(response.data);
 		},
 		async fetchMeasurementHistory(startDate, endDate) {
 			try {
