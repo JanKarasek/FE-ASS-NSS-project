@@ -1,6 +1,11 @@
 <template>
 	<v-app>
 		<v-main>
+			<error
+				v-if="store.error"
+				:text="store.error"
+				@hide="store.clearError()"
+			></error>
 			<v-container>
 				<v-row>
 					<v-col>
@@ -9,18 +14,26 @@
 				</v-row>
 				<v-row>
 					<v-col>
-						<DateTimePickerRange v-model:startDate="defaultStartDate" v-model:endDate="defaultEndDate" />
+						<DateTimePickerRange
+							v-model:startDate="defaultStartDate"
+							v-model:endDate="defaultEndDate"
+						/>
 					</v-col>
 				</v-row>
 
 				<v-row>
 					<v-col>
-						<v-data-table :headers="headers" class="elevation-1" title="Poslední měření">
+						<v-data-table
+							:headers="headers"
+							class="elevation-1"
+							title="Poslední měření"
+						>
 							<template v-slot:top>
 								<v-toolbar flat dense class="tw-bg-white">
-									<v-toolbar-title>Měření v intervalu {{
-							moment(defaultStartDate).format('DD.MM.YYYY HH:mm:ss') }} - {{
-							moment(defaultEndDate).format('DD.MM.YYYY HH:mm:ss') }}
+									<v-toolbar-title
+										>Měření v intervalu
+										{{ moment(defaultStartDate).format('DD.MM.YYYY HH:mm:ss') }}
+										- {{ moment(defaultEndDate).format('DD.MM.YYYY HH:mm:ss') }}
 									</v-toolbar-title>
 								</v-toolbar>
 							</template>
@@ -33,20 +46,28 @@
 							</thead>
 							<tbody>
 								<tr v-for="item in pagedMeasurements" :key="item.name">
-									<td>{{ item.date }}</td>
-									<td>{{ item.sensors }}</td>
-									<td>{{ item.rgb }}</td>
-									<td>{{ item.multispectral }}</td>
+									<td>{{ formatDateMinutes(item.dateTime) }}</td>
+									<td>{{ item.numberOfSensors }}</td>
+									<td>{{ item.rgbCamera ? 'Ano' : 'Ne' }}</td>
+									<td>{{ item.multispectralCamera ? 'Ano' : 'Ne' }}</td>
 									<td>
-										<PrimaryButton text="Stáhnout" />
+										<PrimaryButton
+											text="Stáhnout"
+											@click="downloadData(formatDateMinutes(item.dateTime))"
+										/>
 									</td>
 								</tr>
 							</tbody>
 							<template v-slot:bottom> </template>
 						</v-data-table>
 						<div class="text-center pt-2">
-							<v-pagination v-model="page" :length="pageCount" :total-visible="totalVisible"
-								prev-icon="mdi-chevron-left" next-icon="mdi-chevron-right"></v-pagination>
+							<v-pagination
+								v-model="page"
+								:length="pageCount"
+								:total-visible="totalVisible"
+								prev-icon="mdi-chevron-left"
+								next-icon="mdi-chevron-right"
+							></v-pagination>
 							<div class="tw-text-dark-grey tw-text-xs">{{ rangeText }}</div>
 						</div>
 					</v-col>
@@ -57,54 +78,21 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import PrimaryButton from '@/components/button/PrimaryButton.vue';
 import DateTimePickerRange from '@/components/datepickers/DateTimePickerRange.vue';
 import moment from 'moment';
+import { useMeasurementsStore } from '@/stores/MeasurementsStore.js';
+import { formatDateMinutes } from '../utils';
+import Error from '@/components/Error.vue';
 
-// Dummy data array
-const measurements = ref([
-	{ date: '19.3.2024 14:00', sensors: 6, rgb: 'Ano', multispectral: 'Ano' },
-	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
-	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
-	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
-	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
-	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
-	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
-	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
-	{ date: '19.3.2024 14:00', sensors: 6, rgb: 'Ano', multispectral: 'Ano' },
-	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
-	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
-	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
-	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
-	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
-	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
-	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
-	{ date: '19.3.2024 14:00', sensors: 6, rgb: 'Ano', multispectral: 'Ano' },
-	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
-	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
-	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
-	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
-	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
-	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
-	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
-	{ date: '19.3.2024 14:00', sensors: 6, rgb: 'Ano', multispectral: 'Ano' },
-	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
-	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
-	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
-	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
-	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
-	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
-	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
-	{ date: '19.3.2024 14:00', sensors: 6, rgb: 'Ano', multispectral: 'Ano' },
-	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
-	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
-	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
-	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
-	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
-	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
-	{ date: '19.3.2024 16:00', sensors: 5, rgb: 'Ne', multispectral: 'Ano' },
-]);
+const store = useMeasurementsStore();
+
+onMounted(() => {
+	store.fetchMeasurementHistory(defaultStartDate.value, defaultEndDate.value);
+});
+
+const measurements = computed(() => store.measurementHistory);
 
 const headers = [
 	{ text: 'Datum a čas', value: 'date' },
@@ -139,8 +127,20 @@ defaultStartDate.value.setDate(defaultStartDate.value.getDate() - 7);
 // end date is now
 const defaultEndDate = ref(new Date());
 
+watch([defaultStartDate, defaultEndDate], () => {
+	const formattedStartDate = moment(
+		defaultStartDate.value,
+		'DD.MM.YYYY HH:mm:ss',
+	).format('YYYY-MM-DDTHH:mm:ss');
+	const formattedEndDate = moment(
+		defaultEndDate.value,
+		'DD.MM.YYYY HH:mm:ss',
+	).format('YYYY-MM-DDTHH:mm:ss');
+	store.fetchMeasurementHistory(formattedStartDate, formattedEndDate);
+});
+
 const downloadData = (item) => {
-	console.log('Downloading data for', item.date);
+	console.log('Downloading data for', item);
 };
 </script>
 

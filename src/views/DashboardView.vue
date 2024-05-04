@@ -1,6 +1,12 @@
 <template>
 	<v-app>
 		<v-main>
+			<error
+				v-if="store.error"
+				:text="store.error"
+				@hide="store.clearError()"
+			></error>
+
 			<v-container>
 				<v-row>
 					<v-col>
@@ -9,13 +15,22 @@
 				</v-row>
 				<v-row align="start" justify="start">
 					<v-col cols="auto">
-						<MeasurementWidget title="Poslední záloha" :datetime="firstDate" />
+						<MeasurementWidget
+							title="Poslední záloha"
+							:datetime="store.measurementInfo.lastBackup"
+						/>
 					</v-col>
 					<v-col cols="auto">
-						<MeasurementWidget title="Poslední měření" :datetime="secondDate" />
+						<MeasurementWidget
+							title="Poslední měření"
+							:datetime="store.measurementInfo.lastMeasurement"
+						/>
 					</v-col>
 					<v-col cols="auto">
-						<MeasurementWidget title="Plánované měření" :datetime="thirdDate" />
+						<MeasurementWidget
+							title="Plánované měření"
+							:datetime="store.measurementInfo.plannedMeasurement"
+						/>
 					</v-col>
 				</v-row>
 
@@ -41,14 +56,23 @@
 										text="Zahájit měření"
 										loading-text="Probíhá měření"
 										size="large"
-										@click="store.fetchLatestMeasurements()"
+										@click="updateConfig()"
 									/>
 								</v-col>
 							</v-row>
 
 							<v-expand-transition>
 								<div v-show="showSettings" class="pt-4">
-									<MeasurementSettings />
+									<MeasurementSettings
+										:multispectral="multispectral"
+										:rgb="rgb"
+										:numberOfSensors="numberOfSensors"
+										:measurementLength="measurementLength"
+										@update:multispectral="handleMultispectralUpdate"
+										@update:rgb="handleRgbUpdate"
+										@update:numberOfSensors="handleNumberOfSensorsUpdate"
+										@update:measurementLength="handleMeasurementLengthUpdate"
+									/>
 								</div>
 							</v-expand-transition>
 						</v-card>
@@ -58,8 +82,6 @@
 				<v-row>
 					<v-col>
 						<v-data-table
-							v-model:page="page"
-							:items-per-page="itemsPerPage"
 							:headers="headers"
 							:items="measurements"
 							title="Poslední měření"
@@ -81,10 +103,13 @@
 								<tr v-for="item in displayedMeasurements" :key="item.name">
 									<td>{{ item.dateTime }}</td>
 									<td>{{ item.numberOfSensors }}</td>
-									<td>{{ item.rgbCamera }}</td>
-									<td>{{ item.multispectralCamera }}</td>
+									<td>{{ item.rgbCamera ? 'Ano' : 'Ne' }}</td>
+									<td>{{ item.multispectralCamera ? 'Ano' : 'Ne' }}</td>
 									<td>
-										<PrimaryButton text="Stáhnout" />
+										<PrimaryButton
+											text="Stáhnout"
+											@click="downloadData(item.dateTime)"
+										/>
 									</td>
 								</tr>
 							</tbody>
@@ -98,50 +123,97 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
+import { onMounted, computed, ref } from 'vue';
 import { useMeasurementsStore } from '@/stores/MeasurementsStore.js';
-
-const page = 1;
-const itemsPerPage = 5;
 import PrimaryButton from '@/components/button/PrimaryButton.vue';
 import LoadingButton from '@/components/button/LoadingButton.vue';
 import MeasurementWidget from '@/components/measurements/MeasurementWidget.vue';
 import MeasurementSettings from '@/components/measurements/MeasurementSettings.vue';
-import moment from 'moment';
+import Error from '../components/Error.vue';
+import { formatDateMinutes } from '../utils';
 
 const store = useMeasurementsStore();
 
-const firstDate = moment('19.3.2024 13:30', 'DD.MM.YYYY HH:mm');
-const secondDate = moment('19.3.2024 11:30', 'DD.MM.YYYY HH:mm');
-const thirdDate = moment('30.3.2024 13:30', 'DD.MM.YYYY HH:mm');
-
-const measurements = ref(store.latestMeasurement);
-//store.fetchLatestMeasurements();
+onMounted(() => {
+	store.fetchLatestMeasurements();
+	store.fetchMeasurementConfig();
+});
 
 const headers = [
 	{ text: 'Datum a čas', value: 'date' },
 	{ text: 'Počet senzorů', value: 'sensors' },
 	{ text: 'RGB', value: 'rgb' },
-	{ text: 'Multispectral', value: 'multispectral' },
+	{ text: 'Multispektrální', value: 'multispectral' },
 	{ text: 'Stáhnout data', value: 'actions', sortable: false },
 ];
 
+const measurements = computed(() => store.measurementInfo.latestMeasurement);
+const measurementsConfig = computed(() => store.measurementConfig);
+
+const multispectral = ref(
+	store.measurementConfig?.multispectralCamera ?? false,
+);
+const rgb = ref(store.measurementConfig?.rgbCamera ?? false);
+const numberOfSensors = ref(store.measurementConfig?.numberOfSensors ?? 0);
+const measurementLength = ref(store.measurementConfig?.lengthOfAE ?? 0);
+
 const showSettings = ref(false);
+function returnToConsole() {
+	const currentTime = new Date().toISOString();
+	console.log('Zahájení měření:', currentTime);
+	console.log('Multispektrální kamera:', multispectral.value);
+	console.log('RGB kamera:', rgb.value);
+	console.log('Počet senzorů:', numberOfSensors.value);
+	console.log('Délka měření:', measurementLength.value);
+}
+
+function updateConfig() {
+	try {
+		const currentTime = new Date().toISOString();
+		const data = {
+			measurementFrequency: 60,
+			firstMeasurement: currentTime,
+			rgbCamera: rgb.value,
+			multispectralCamera: multispectral.value,
+			numberOfSensors: numberOfSensors.value,
+			lengthOfAE: measurementLength.value,
+		};
+		store.updateMeasurementConfig(data);
+	} catch (error) {
+		store.error = error.message;
+	}
+}
+
+function handleMultispectralUpdate(value) {
+	multispectral.value = value;
+}
+
+function handleRgbUpdate(value) {
+	rgb.value = value;
+}
+
+function handleNumberOfSensorsUpdate(value) {
+	numberOfSensors.value = value;
+}
+
+function handleMeasurementLengthUpdate(value) {
+	measurementLength.value = value;
+}
 
 function toggleSettings() {
 	showSettings.value = !showSettings.value;
 }
+
 const downloadData = (item) => {
-	console.log('Downloading data for', item.date);
+	console.log('Stahuji data pro', item);
 };
 
 const displayedMeasurements = computed(() => {
-	return measurements.value.slice(0, itemsPerPage);
+	return measurements.value.slice(0, 5).map((item) => ({
+		...item,
+		dateTime: formatDateMinutes(item.dateTime),
+	}));
 });
-
-function pageCount() {
-	return Math.ceil(measurements.value.length / itemsPerPage);
-}
 </script>
 
 <style scoped></style>

@@ -1,70 +1,69 @@
-import { defineStore } from "pinia";
-import axios from "axios";
-import config from "../config";
-import jwtDecode from "jwt-decode";
-/*
-export const useUserStore = defineStore("user", {
-    state() {
-        const oldToken = localStorage.getItem("token");
+import { defineStore } from 'pinia';
+import axios from 'axios';
+import config from '../config';
+import jwtDecode from 'jwt-decode';
 
-        if (oldToken) {
-            axios.defaults.headers.common["Authorization"] = "Bearer " + oldToken;
-        }
+export const useUserStore = defineStore('user', {
+	state() {
+		const oldToken = localStorage.getItem('token');
 
-        return {
-            token: oldToken,
-            error: null,
-            isLoggingIn: false,
-            loginMessage: null,
-            afterLoginRoute: null,
-        };
-    },
+		if (oldToken) {
+			axios.defaults.headers.common['Authorization'] = 'Bearer ' + oldToken;
+		}
 
-    getters: {
-        isAuthenticated: (state) => state.token !== null,
-        user: (state) => jwtDecode(state.token),
-    },
+		return {
+			token: oldToken,
+			error: null,
+			isLoggingIn: false,
+			loginMessage: null,
+			afterLoginRoute: null,
+		};
+	},
 
-    actions: {
-        async login(login, password) {
-            try {
-                this.isLoggingIn = true;
+	getters: {
+		isAuthenticated: (state) => state.token !== null,
+		user: (state) => jwtDecode(state.token),
+	},
 
-                const data = { login, password };
-                const response = await axios.post(
-                    config.backendUrl + "/user/login",
-                    data
-                );
+	actions: {
+		async login(login, password) {
+			try {
+				this.isLoggingIn = true;
 
-                this.token = response.data.token;
-                axios.defaults.headers.common["Authorization"] = "Bearer " + this.token;
-                localStorage.setItem("token", this.token);
+				const data = { login, password };
+				const response = await axios.post(
+					config.backendUrl + '/user/login',
+					data,
+				);
 
-                this.error = null;
-                this.loginMessage = null;
-                this.isLoggingIn = false;
-            } catch (e) {
-                this.error = "Cannot log in! " + e;
-            }
-        },
+				this.token = response.data.token;
+				axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.token;
+				localStorage.setItem('token', this.token);
 
-        setLoginMessage(message) {
-            this.loginMessage = message;
-        },
+				this.error = null;
+				this.loginMessage = null;
+				this.isLoggingIn = false;
+			} catch (e) {
+				this.error = 'Cannot log in! ' + e;
+			}
+		},
 
-        setAfterLoginRoute(route) {
-            this.afterLoginRoute = route;
-        },
+		setLoginMessage(message) {
+			this.loginMessage = message;
+		},
 
-        logout() {
-            this.token = null;
-            delete axios.defaults.headers.common["Authorization"];
-            localStorage.removeItem("token");
-        },
+		setAfterLoginRoute(route) {
+			this.afterLoginRoute = route;
+		},
 
-        clearError() {
-            this.error = null;
-        },
-    },
+		logout() {
+			this.token = null;
+			delete axios.defaults.headers.common['Authorization'];
+			localStorage.removeItem('token');
+		},
+
+		clearError() {
+			this.error = null;
+		},
+	},
 });
-*/
