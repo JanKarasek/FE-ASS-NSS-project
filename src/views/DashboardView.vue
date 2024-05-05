@@ -130,8 +130,6 @@ onMounted(async () => {
 	rgbCameraChecked.value = store.measurementConfig.rgbCamera;
 	selectedSensorCount.value = store.measurementConfig.numberOfSensors;
 	loading.value = false;
-
-	console.log(measurementDuration.value);
 });
 
 const headers = [
@@ -155,7 +153,6 @@ function updateConfig() {
 			numberOfSensors: selectedSensorCount.value,
 			lengthOfAE: Number(measurementDuration.value),
 		};
-		console.log(measurementDuration.value);
 		store.updateMeasurementConfig(data);
 	} catch (error) {
 		store.error = error.message;

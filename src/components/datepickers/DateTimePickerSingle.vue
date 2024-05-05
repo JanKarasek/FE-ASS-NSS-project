@@ -28,8 +28,8 @@ const selectDate = () => {
 }
 
 // Watch for changes in props and update the date ref accordingly
-watch(() => props.date, ([date]) => {
-    date.value = date;
+watch(() => props.date, (newDate) => {
+    date.value = newDate;
 });
 
 const emit = defineEmits('update:date');
