@@ -18,7 +18,7 @@
 					<v-form v-model="form" @submit.prevent="onSubmit">
 						<v-text-field
 							variant="outlined"
-							v-model="email"
+							v-model="userName"
 							:readonly="loading"
 							:rules="[rules.required, rules.minName]"
 							class="tw-mb-2 tw-w-96"
@@ -57,14 +57,16 @@
 import { ref } from 'vue';
 import PrimaryButton from '@/components/button/PrimaryButton.vue';
 import { useRouter } from 'vue-router';
+import {useUserStore} from "@/stores/UserStore.js";
 
 // Definování reaktivních dat
 const form = ref(false);
-const email = ref('');
+const userName = ref('');
 const password = ref('');
 const loading = ref(false);
 const visible = ref(false);
 const router = useRouter();
+const store = useUserStore();
 
 const rules = {
 	required: (v) => !!v || 'Políčko je povinné',
@@ -76,6 +78,8 @@ const onSubmit = () => {
 	if (!form.value) return;
 
 	loading.value = true;
+
+    store.login(userName.value, password.value);
 
 	setTimeout(() => {
 		loading.value = false;

@@ -54,8 +54,6 @@ export const useMeasurementsStore = defineStore('measurements', {
 					config.backendUrl + '/settings/measurementConfig',
 				);
 				this.measurementConfig = response.data;
-				console.log('Data načtena:', response.data);
-				console.log('Data ulozena:', this.measurementConfig);
 				this.error = null;
 			} catch (error) {
 				this.error = 'Cannot get measurement configuration ' + error;

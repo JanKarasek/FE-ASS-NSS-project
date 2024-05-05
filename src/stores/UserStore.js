@@ -1,18 +1,17 @@
 import { defineStore } from 'pinia';
 import axios from 'axios';
-import config from '../config';
-import jwtDecode from 'jwt-decode';
+import config from "@/config.js";
 
 export const useUserStore = defineStore('user', {
 	state() {
-		const oldToken = localStorage.getItem('token');
+		/*const oldToken = localStorage.getItem('token');
 
 		if (oldToken) {
 			axios.defaults.headers.common['Authorization'] = 'Bearer ' + oldToken;
 		}
-
+*/
 		return {
-			token: oldToken,
+			token: null,
 			error: null,
 			isLoggingIn: false,
 			loginMessage: null,
@@ -21,8 +20,8 @@ export const useUserStore = defineStore('user', {
 	},
 
 	getters: {
-		isAuthenticated: (state) => state.token !== null,
-		user: (state) => jwtDecode(state.token),
+/*		isAuthenticated: (state) => state.token !== null,
+		user: (state) => jwtDecode(state.token),*/
 	},
 
 	actions: {
@@ -35,9 +34,8 @@ export const useUserStore = defineStore('user', {
 					config.backendUrl + '/user/login',
 					data,
 				);
-
 				this.token = response.data.token;
-				axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.token;
+				// axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.token;
 				localStorage.setItem('token', this.token);
 
 				this.error = null;
@@ -47,7 +45,7 @@ export const useUserStore = defineStore('user', {
 				this.error = 'Cannot log in! ' + e;
 			}
 		},
-
+		/*
 		setLoginMessage(message) {
 			this.loginMessage = message;
 		},
@@ -64,6 +62,6 @@ export const useUserStore = defineStore('user', {
 
 		clearError() {
 			this.error = null;
-		},
+		},*/
 	},
 });
