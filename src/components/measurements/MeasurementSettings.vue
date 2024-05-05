@@ -1,68 +1,49 @@
 <template>
-	<v-row>
-		<v-col cols="4">
-			<v-checkbox
-				v-model="multispectral"
-				label="Multispektrální kamera"
-				color="#77BE13"
-				@change="updateSettings"
-			></v-checkbox>
-			<v-text-field
-				v-model="measurementLength"
-				type="number"
-				min="0"
-				class="tw-pl-3"
-				label="Délka měření akustické emise"
-				placeholder="Zadejte délku v minutách"
-				variant="underlined"
-				@change="updateSettings"
-			></v-text-field>
-		</v-col>
-		<v-col cols="4" offset="2">
-			<v-checkbox
-				v-model="rgb"
-				label="RGB kamera"
-				color="#77BE13"
-				@change="updateSettings"
-			></v-checkbox>
-			<v-select
-				v-model="numberOfSensors"
-				variant="underlined"
-				label="Počet senzorů"
-				:items="sensorOptions"
-				placeholder="Vyberte počet"
-				@change="updateSettings"
-			></v-select>
-		</v-col>
-	</v-row>
+    <v-row>
+        <v-col cols="4">
+            <v-checkbox v-model="localMultispectralCameraChecked" @change="updateMultispectralCameraChecked($event.target.checked)" label="Multispektrální kamera" color="#77BE13"></v-checkbox>
+            <v-text-field v-model="localMeasurementDuration" type="number" min="0" class="tw-pl-3" label="Délka měření akustické emise" placeholder="Zadejte délku v minutách" variant="underlined"></v-text-field>
+        </v-col>
+        <v-col cols="4" offset="2">
+            <v-checkbox v-model="localRgbCameraChecked" @change="updateRgbCameraChecked($event.target.checked)" label="RGB kamera" color="#77BE13"></v-checkbox>
+            <v-select v-model="localSelectedSensorCount" variant="underlined" label="Počet senzorů" :items="rgbCameraSensors" placeholder="Vyberte počet"></v-select>
+        </v-col>
+    </v-row>
 </template>
 
 <script setup>
-import { ref, defineEmits, defineProps } from 'vue';
+import { defineProps, defineEmits, ref, watch } from 'vue';
 
-const emits = defineEmits([
-	'update:multispectral',
-	'update:rgb',
-	'update:numberOfSensors',
-	'update:measurementLength',
-]);
 const props = defineProps({
-	multispectral: Boolean,
-	rgb: Boolean,
-	measurementLength: Number,
-	numberOfSensors: Number,
+    multispectralCameraChecked: Boolean,
+    measurementDuration: Number,
+    rgbCameraChecked: Boolean,
+    selectedSensorCount: Number,
+    rgbCameraSensors: Array
 });
 
-const multispectral = ref(props.multispectral);
-const rgb = ref(props.rgb);
-const numberOfSensors = ref(props.numberOfSensors);
-const measurementLength = ref(props.measurementLength);
-const sensorOptions = ref([1, 2, 3, 4, 5, 6]); // Možnosti pro v-select
+const emits = defineEmits(['update:multispectralCameraChecked', 'update:rgbCameraChecked', 'update:measurementDuration', 'update:selectedSensorCount']);
 
-function updateSettings() {
-	emits('update:multispectral', multispectral.value);
-	emits('update:rgb', rgb.value);
-	emits('update:numberOfSensors', numberOfSensors.value);
-	emits('update:measurementLength', measurementLength.value);
+const localMeasurementDuration = ref(props.measurementDuration);
+const localSelectedSensorCount = ref(props.selectedSensorCount);
+const localMultispectralCameraChecked = ref(props.multispectralCameraChecked);
+const localRgbCameraChecked = ref(props.rgbCameraChecked);
+
+watch(localMeasurementDuration, (newValue) => {
+    emits('update:measurementDuration', newValue);
+});
+
+watch(localSelectedSensorCount, (newValue) => {
+    emits('update:selectedSensorCount', newValue);
+});
+
+function updateMultispectralCameraChecked(value) {
+    localMultispectralCameraChecked.value = value;
+    emits('update:multispectralCameraChecked', value);
+}
+
+function updateRgbCameraChecked(value) {
+    localRgbCameraChecked.value = value;
+    emits('update:rgbCameraChecked', value);
 }
 </script>
