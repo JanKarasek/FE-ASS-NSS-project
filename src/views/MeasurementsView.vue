@@ -78,11 +78,11 @@ const measurementDate = ref(measurementsConfig?.value?.firstMeasurement ?? Date.
 
 onMounted(async () => {
 	store.fetchLatestMeasurements();
-
 	loading.value = true;
 	await store.fetchMeasurementConfig();
 
 	measurementDuration.value = store.measurementConfig.lengthOfAE;
+    console.log(measurementDuration.value);
 	multispectralCameraChecked.value = store.measurementConfig.multispectralCamera;
 	rgbCameraChecked.value = store.measurementConfig.rgbCamera;
 	selectedSensorCount.value = store.measurementConfig.numberOfSensors;

@@ -12,7 +12,7 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits, ref, watch } from 'vue';
+import {defineProps, defineEmits, ref, watch, onUpdated} from 'vue';
 
 const props = defineProps({
     multispectralCameraChecked: Boolean,
@@ -46,4 +46,11 @@ function updateRgbCameraChecked(value) {
     localRgbCameraChecked.value = value;
     emits('update:rgbCameraChecked', value);
 }
+
+onUpdated( () => {
+    localMeasurementDuration.value = props.measurementDuration;
+    localSelectedSensorCount.value = props.selectedSensorCount;
+    localMultispectralCameraChecked.value = props.multispectralCameraChecked;
+    localRgbCameraChecked.value = props.rgbCameraChecked;
+});
 </script>
