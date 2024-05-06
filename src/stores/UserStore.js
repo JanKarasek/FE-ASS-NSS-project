@@ -25,11 +25,11 @@ export const useUserStore = defineStore('user', {
 	},
 
 	actions: {
-		async login(login, password) {
+		async login(userName, password) {
 			try {
 				this.isLoggingIn = true;
 
-				const data = { login, password };
+				const data = { userName, password };
 				const response = await axios.post(
 					config.backendUrl + '/users/login',
 					data,
