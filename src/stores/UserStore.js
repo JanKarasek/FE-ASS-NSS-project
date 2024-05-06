@@ -31,7 +31,7 @@ export const useUserStore = defineStore('user', {
 
 				const data = { login, password };
 				const response = await axios.post(
-					config.backendUrl + '/user/login',
+					config.backendUrl + '/users/login',
 					data,
 				);
 				this.token = response.data.token;
