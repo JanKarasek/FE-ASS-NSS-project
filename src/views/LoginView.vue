@@ -64,6 +64,7 @@ const form = ref(false);
 const userName = ref('');
 const password = ref('');
 const loading = ref(false);
+const error = ref('');
 const visible = ref(false);
 const router = useRouter();
 const store = useUserStore();
@@ -74,16 +75,18 @@ const rules = {
 	minName: (v) => v.length >= 3 || 'Jméno musí mít alespoň 3 znaky',
 };
 
-const onSubmit = () => {
-	if (!form.value) return;
+const onSubmit = async () => {
+    if (!form.value) return;
 
-	loading.value = true;
+    loading.value = true;
 
-    store.login(userName.value, password.value);
-
-	setTimeout(() => {
-		loading.value = false;
-		router.push({ path: '/dashboard' });
-	}, 1000);
+    await store.login(userName.value, password.value);
+    loading.value = false;
+    if (store.isLoggedIn) {
+        await router.push({path: '/dashboard'});
+    } else {
+        error.value = store.error;
+        console.log(error.value);
+    }
 };
 </script>
