@@ -17,6 +17,7 @@
 
 					<v-form v-model="form" @submit.prevent="onSubmit">
 						<v-text-field
+                            :error="error"
 							variant="outlined"
 							v-model="userName"
 							:readonly="loading"
@@ -27,6 +28,7 @@
 						></v-text-field>
 
 						<v-text-field
+                            :error="error"
 							:append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
 							:type="visible ? 'text' : 'password'"
 							@click:append-inner="visible = !visible"
@@ -64,7 +66,7 @@ const form = ref(false);
 const userName = ref('');
 const password = ref('');
 const loading = ref(false);
-const error = ref('');
+const error = ref(false);
 const visible = ref(false);
 const router = useRouter();
 const store = useUserStore();
@@ -85,7 +87,7 @@ const onSubmit = async () => {
     if (store.isLoggedIn) {
         await router.push({path: '/dashboard'});
     } else {
-        error.value = store.error;
+        error.value = true;
         console.log(error.value);
     }
 };
