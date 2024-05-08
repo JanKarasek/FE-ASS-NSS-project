@@ -25,6 +25,7 @@
 							class="tw-mb-2 tw-w-96"
 							label="Přihlašovací jméno"
 							clearable
+                            @input="clearErrors"
 						></v-text-field>
 
 						<v-text-field
@@ -39,6 +40,7 @@
 							label="Password"
 							placeholder="Zadejte heslo"
 							clearable
+                            @input="clearErrors"
 						></v-text-field>
 
 						<PrimaryButton
@@ -75,6 +77,10 @@ const rules = {
 	required: (v) => !!v || 'Políčko je povinné',
 	minPassword: (v) => v.length >= 4 || 'Heslo musí mít alespoň 4 znaky',
 	minName: (v) => v.length >= 3 || 'Jméno musí mít alespoň 3 znaky',
+};
+
+const clearErrors = () => {
+    error.value = false;
 };
 
 const onSubmit = async () => {

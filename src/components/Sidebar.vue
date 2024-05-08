@@ -41,10 +41,23 @@
 			</v-list>
 			<template v-slot:append>
 				<div class="tw-w-auto tw-border-t-2 tw-border-light-grey">
-					<v-list-item
-						prepend-icon="mdi-account-circle-outline"
-						title="Miroslav Jaroš"
-					></v-list-item>
+                    <v-menu open-on-hover location=top>
+                        <template v-slot:activator="{ props }">
+                            <v-btn class="tw-w-full" variant="text" v-bind="props" prepend-icon="mdi-account-circle-outline">
+                                Miroslav Jaroš
+                            </v-btn>
+
+                        </template>
+
+                        <v-list>
+                            <v-list-item>
+                                <v-btn variant="text" class="tw-w-full" @click="doLogout">
+                                    <v-icon>mdi-power</v-icon>
+                                    Odhlásit se
+                                </v-btn>
+                            </v-list-item>
+                        </v-list>
+                    </v-menu>
 				</div>
 			</template>
 		</v-navigation-drawer>
@@ -53,12 +66,20 @@
 
 <script setup>
 import { ref } from 'vue';
+import {useUserStore} from "@/stores/UserStore.js";
+import router from "@/router/index.js";
 
 const isSmallScreen = ref(window.innerWidth < 960);
+const store = useUserStore();
 
 window.addEventListener('resize', () => {
 	isSmallScreen.value = window.innerWidth < 960;
 });
+
+async function doLogout() {
+    await store.logout();
+    await router.push({name: 'login'});
+}
 </script>
 
 <style scoped>

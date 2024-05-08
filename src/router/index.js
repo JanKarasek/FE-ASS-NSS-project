@@ -17,25 +17,37 @@ const router = createRouter({
 			path: '/dashboard',
 			name: 'dashboard',
 			component: DashboardView,
+			meta: { requiresAuth: true }
 		},
 		{
 			path: '/history',
 			name: 'history',
 			component: HistoryView,
+			meta: { requiresAuth: true }
 		},
 		{
 			path: '/measurements',
 			name: 'measurements',
 			component: MeasurementsView,
+			meta: { requiresAuth: true }
 		},
 		{
 			path: '/settings',
 			name: 'settings',
 			component: SettingsView,
+			meta: { requiresAuth: true }
 		},
 	],
 });
 
-function checkAuthentication(to, from, next) {}
+router.beforeEach((to, from, next) => {
+	const token = localStorage.getItem('token');
+
+	if (to.meta.requiresAuth && !token) {
+		next({ name: 'login' });
+	} else {
+		next();
+	}
+});
 
 export default router;

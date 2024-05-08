@@ -42,15 +42,16 @@ export const useUserStore = defineStore('user', {
 				this.isLoggedIn = false;
 			}
 		},
-		/*
-		setLoginMessage(message) {
-			this.loginMessage = message;
-		},
 
 		logout() {
 			this.token = null;
 			delete axios.defaults.headers.common['Authorization'];
 			localStorage.removeItem('token');
+		},
+
+		/*
+		setLoginMessage(message) {
+			this.loginMessage = message;
 		},
 
 		clearError() {
