@@ -1,7 +1,11 @@
 <template>
 	<v-app>
 		<v-main>
-			<error v-if="store.error" :text="store.error" @hide="store.clearError()"></error>
+			<error
+				v-if="store.error"
+				:text="store.error"
+				@hide="store.clearError()"
+			></error>
 
 			<v-container>
 				<v-row>
@@ -11,14 +15,16 @@
 				</v-row>
 				<v-row align="start" justify="start">
 					<v-col cols="auto">
-						<MeasurementWidget title="Poslední záloha" :datetime="store.measurementInfo.lastBackup" />
+						<MeasurementWidget
+							title="Poslední měření"
+							:datetime="store.measurementInfo.lastMeasurement"
+						/>
 					</v-col>
 					<v-col cols="auto">
-						<MeasurementWidget title="Poslední měření" :datetime="store.measurementInfo.lastMeasurement" />
-					</v-col>
-					<v-col cols="auto">
-						<MeasurementWidget title="Plánované měření"
-							:datetime="store.measurementInfo.plannedMeasurement" />
+						<MeasurementWidget
+							title="Plánované měření"
+							:datetime="store.measurementInfo.plannedMeasurement"
+						/>
 					</v-col>
 				</v-row>
 
@@ -28,32 +34,43 @@
 							<v-row class="tw-flex tw-justify-between tw-items-center">
 								<v-col>
 									<v-card-title class="tw-pl-1">Nové měření</v-card-title>
-									<v-card-text @click="toggleSettings" class="tw-cursor-pointer tw-pl-1">
+									<v-card-text
+										@click="toggleSettings"
+										class="tw-cursor-pointer tw-pl-1"
+									>
 										{{ showSettings ? 'Zobrazit méně' : 'Upravit nastavení' }}
 										<v-icon>{{
-				showSettings ? 'mdi-chevron-up' : 'mdi-chevron-down'
-			}}</v-icon>
+											showSettings ? 'mdi-chevron-up' : 'mdi-chevron-down'
+										}}</v-icon>
 									</v-card-text>
 								</v-col>
 
 								<v-col class="tw-flex tw-justify-end">
-									<LoadingButton text="Zahájit měření" loading-text="Probíhá měření" size="large"
-										@click="updateConfig()" />
+									<LoadingButton
+										text="Zahájit měření"
+										loading-text="Probíhá měření"
+										size="large"
+										@click="updateConfig()"
+									/>
 								</v-col>
 							</v-row>
 
 							<v-expand-transition>
 								<div v-if="!loading">
 									<div v-show="showSettings" class="pt-4">
-										<MeasurementSettings :multispectralCameraChecked="multispectralCameraChecked"
-											@update:multispectralCameraChecked="updateMultispectralCameraChecked"
+										<MeasurementSettings
+											:multispectralCameraChecked="multispectralCameraChecked"
+											@update:multispectralCameraChecked="
+												updateMultispectralCameraChecked
+											"
 											:measurementDuration="measurementDuration"
 											@update:measurementDuration="updateMeasurementDuration"
 											:rgbCameraChecked="rgbCameraChecked"
 											@update:rgbCameraChecked="updateRgbCameraChecked"
 											:selectedSensorCount="selectedSensorCount"
 											@update:selectedSensorCount="updateSelectedSensorCount"
-											:rgbCameraSensors="rgbCameraSensors" />
+											:rgbCameraSensors="rgbCameraSensors"
+										/>
 									</div>
 								</div>
 							</v-expand-transition>
@@ -63,8 +80,12 @@
 
 				<v-row>
 					<v-col>
-						<v-data-table :headers="headers" :items="measurements" title="Poslední měření"
-							class="elevation-1">
+						<v-data-table
+							:headers="headers"
+							:items="measurements"
+							title="Poslední měření"
+							class="elevation-1"
+						>
 							<template v-slot:top>
 								<v-toolbar flat dense class="tw-bg-white">
 									<v-toolbar-title>Poslední měření </v-toolbar-title>
@@ -84,7 +105,10 @@
 									<td>{{ item.rgbCamera ? 'Ano' : 'Ne' }}</td>
 									<td>{{ item.multispectralCamera ? 'Ano' : 'Ne' }}</td>
 									<td>
-										<PrimaryButton text="Stáhnout" @click="downloadData(item.dateTime)" />
+										<PrimaryButton
+											text="Stáhnout"
+											@click="downloadData(item.dateTime)"
+										/>
 									</td>
 								</tr>
 							</tbody>
@@ -113,7 +137,9 @@ const loading = ref(true);
 const measurements = computed(() => store.measurementInfo.latestMeasurement);
 const measurementsConfig = computed(() => store.measurementConfig);
 
-const multispectralCameraChecked = ref(measurementsConfig.value.multispectralCamera);
+const multispectralCameraChecked = ref(
+	measurementsConfig.value.multispectralCamera,
+);
 const measurementDuration = ref(measurementsConfig.value.lengthOfAE);
 const rgbCameraChecked = ref(measurementsConfig.value.rgbCamera);
 const selectedSensorCount = ref(measurementsConfig.value.numberOfSensors);
@@ -124,9 +150,10 @@ onMounted(async () => {
 
 	loading.value = true;
 	await store.fetchMeasurementConfig();
-	
+
 	measurementDuration.value = store.measurementConfig.lengthOfAE;
-	multispectralCameraChecked.value = store.measurementConfig.multispectralCamera;
+	multispectralCameraChecked.value =
+		store.measurementConfig.multispectralCamera;
 	rgbCameraChecked.value = store.measurementConfig.rgbCamera;
 	selectedSensorCount.value = store.measurementConfig.numberOfSensors;
 	loading.value = false;
