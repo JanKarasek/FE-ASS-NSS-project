@@ -62,6 +62,19 @@ export const useUserStore = defineStore('user', {
 			}
 		},
 
+		async addUser(data) {
+			try {
+				const response = await axios.put(
+					config.backendUrl + '/users',
+					data,
+				);
+				this.user = response.data;
+				this.error = null;
+			} catch (error) {
+				this.error = 'Cannot add user ' + error;
+			}
+		},
+
 		/*
 		setLoginMessage(message) {
 			this.loginMessage = message;
