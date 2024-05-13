@@ -9,6 +9,7 @@ export const useUserStore = defineStore('user', {
 		error: null,
 		afterLoginRoute: null,
 		isLoggedIn: null,
+		users: [],
 	}),
 	/*const oldToken = localStorage.getItem('token');
 
@@ -47,6 +48,18 @@ export const useUserStore = defineStore('user', {
 			this.token = null;
 			delete axios.defaults.headers.common['Authorization'];
 			localStorage.removeItem('token');
+		},
+
+		async fetchUsers() {
+			try {
+				const response = await axios.get(
+					config.backendUrl + '/users',
+				);
+				this.users = response.data;
+				this.error = null;
+			} catch (error) {
+				this.error = 'Cannot get users ' + error;
+			}
 		},
 
 		/*

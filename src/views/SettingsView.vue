@@ -22,43 +22,11 @@
                                         <v-card-title
                                             class="d-flex justify-start align-center text-center text-body-1">
                                             <v-icon class="pr-3"> mdi-account-circle-outline</v-icon>
-                                            {{ user.name }}
+                                            {{ user.firstName }} {{ user.lastName }}
                                         </v-card-title>
-                                    </v-col>
-                                    <v-col cols="12" sm="4" class="d-flex justify-start">
-                                        <v-card-title class="text-center text-body-1">
-                                            {{ user.role }}
-                                        </v-card-title>
-                                    </v-col>
-                                    <v-col cols="12" sm="4">
-                                        <v-card-actions class="d-flex justify-end">
-                                            <PrimaryButton v-if="user.role === 'user'" text="Povýšit na administrátora" bgColor="tw-bg-dark-grey" />
-                                            <PrimaryButton v-if="user.role !== 'admin'" text="Odebrat přístup" bgColor="tw-bg-very-dark-grey" />
-                                        </v-card-actions>
                                     </v-col>
                                 </v-row>
                         </v-card>
-                    </v-col>
-                </v-row>
-                <v-row>
-                    <v-col>
-                        <div class="tw-text-xl">Přidat nového uživatele</div>
-                    </v-col>
-                </v-row>
-                <v-row>
-                    <v-col>
-                        <v-text-field
-                            v-model="email"
-                            label="Zadejte emailovou adresu"
-                            density="compact"
-                            variant="outlined"
-                            clearable
-                            :error-messages="emailError ? ['Neplatná emailová adresa'] : []"
-                            @blur="validateEmail"
-                            @click:clear="clearError"></v-text-field>
-                    </v-col>
-                    <v-col>
-                        <PrimaryButton text="Odeslat přihlašovací email"/>
                     </v-col>
                 </v-row>
             </v-container>
@@ -67,16 +35,16 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import PrimaryButton from "@/components/button/PrimaryButton.vue";
+import { useUserStore } from '@/stores/UserStore';
+import { ref, onMounted, computed } from 'vue';
 
-// Dummy data array
-const users = ref([
-	{ name: 'Miroslav Jaroš', role: 'admin'},
-    { name: 'Jan novák', role: 'user'},
-    { name: 'Pavel novák', role: 'emailSent'},
-]);
+const store = useUserStore();
 
+onMounted(() => {
+	store.fetchUsers();
+});
+
+const users = computed(() => store.users);
 
 const email = ref('');
 const emailError = ref(false);
