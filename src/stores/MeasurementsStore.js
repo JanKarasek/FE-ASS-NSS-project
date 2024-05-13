@@ -12,11 +12,23 @@ export const useMeasurementsStore = defineStore('measurements', {
 		},
 		measurementHistory: [],
 		measurementConfig: {},
+		manualMeasurementConfig: {},
 		error: null,
 	}),
 	getters: {},
 
 	actions: {
+		async fetchManualMeasurementConfig() {
+			try {
+				const response = await axios.get(
+					config.backendUrl + '/measurements/start',
+				);
+				this.manualMeasurementConfig = response.data;
+				this.error = null;
+			} catch (error) {
+				this.error = 'Cannot get manual measurement configuration ' + error;
+			}
+		},
 		async fetchLatestMeasurements() {
 			try {
 				const response = await axios.get(

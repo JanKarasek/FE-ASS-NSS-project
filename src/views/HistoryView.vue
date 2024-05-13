@@ -48,8 +48,10 @@
 								<tr v-for="item in pagedMeasurements" :key="item.name">
 									<td>{{ formatDateMinutes(item.dateTime) }}</td>
 									<td>{{ item.numberOfSensors }}</td>
+									<td>{{ item.lengthOfAE }}</td>
 									<td>{{ item.rgbCamera ? 'Ano' : 'Ne' }}</td>
 									<td>{{ item.multispectralCamera ? 'Ano' : 'Ne' }}</td>
+									<td>{{ item.scheduled ? 'Ano' : 'Ne' }}</td>
 									<td>
 										<PrimaryButton
 											text="Stáhnout"
@@ -97,8 +99,10 @@ const measurements = computed(() => store.measurementHistory);
 const headers = [
 	{ text: 'Datum a čas', value: 'date' },
 	{ text: 'Počet senzorů', value: 'sensors' },
+	{ text: 'Délka AE', value: 'lengthOfAE' },
 	{ text: 'RGB', value: 'rgb' },
-	{ text: 'Multispectral', value: 'multispectral' },
+	{ text: 'Multispektrální', value: 'multispectral' },
+	{ text: 'Plánované měření', value: 'scheduled' },
 	{ text: 'Stáhnout data', value: 'actions', sortable: false },
 ];
 

@@ -10,7 +10,7 @@
 			<v-container>
 				<v-row>
 					<v-col>
-						<div class="tw-text-2xl">Dobré ráno, {{ name }}.</div>
+						<div class="tw-text-2xl">Dobré ráno, {{ first_name }}.</div>
 					</v-col>
 				</v-row>
 				<v-row align="start" justify="start">
@@ -102,8 +102,10 @@
 								<tr v-for="item in displayedMeasurements" :key="item.name">
 									<td>{{ item.dateTime }}</td>
 									<td>{{ item.numberOfSensors }}</td>
+									<td>{{ item.lengthOfAE }}</td>
 									<td>{{ item.rgbCamera ? 'Ano' : 'Ne' }}</td>
 									<td>{{ item.multispectralCamera ? 'Ano' : 'Ne' }}</td>
+									<td>{{ item.scheduled ? 'Ano' : 'Ne' }}</td>
 									<td>
 										<PrimaryButton
 											text="Stáhnout"
@@ -144,7 +146,7 @@ const measurementDuration = ref(measurementsConfig.value.lengthOfAE);
 const rgbCameraChecked = ref(measurementsConfig.value.rgbCamera);
 const selectedSensorCount = ref(measurementsConfig.value.numberOfSensors);
 const rgbCameraSensors = ref([1, 2, 3, 4, 5, 6]);
-const name = ref(sessionStorage.getItem('name'));
+const first_name = ref(sessionStorage.getItem('first_name'));
 
 onMounted(async () => {
 	store.fetchLatestMeasurements();
@@ -163,8 +165,10 @@ onMounted(async () => {
 const headers = [
 	{ text: 'Datum a čas', value: 'date' },
 	{ text: 'Počet senzorů', value: 'sensors' },
+	{ text: 'Délka AE', value: 'lengthOfAE' },
 	{ text: 'RGB', value: 'rgb' },
 	{ text: 'Multispektrální', value: 'multispectral' },
+	{ text: 'Plánované měření', value: 'scheduled' },
 	{ text: 'Stáhnout data', value: 'actions', sortable: false },
 ];
 

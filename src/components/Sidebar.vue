@@ -41,23 +41,27 @@
 			</v-list>
 			<template v-slot:append>
 				<div class="tw-w-auto tw-border-t-2 tw-border-light-grey">
-                    <v-menu open-on-hover location=top>
-                        <template v-slot:activator="{ props }">
-                            <v-btn class="tw-w-full" variant="text" v-bind="props" prepend-icon="mdi-account-circle-outline">
-                                {{ name }}
-                            </v-btn>
+					<v-menu open-on-hover location="top">
+						<template v-slot:activator="{ props }">
+							<v-btn
+								class="tw-w-full"
+								variant="text"
+								v-bind="props"
+								prepend-icon="mdi-account-circle-outline"
+							>
+								{{ first_name }} {{ last_name }}
+							</v-btn>
+						</template>
 
-                        </template>
-
-                        <v-list>
-                            <v-list-item>
-                                <v-btn variant="text" class="tw-w-full" @click="doLogout">
-                                    <v-icon>mdi-power</v-icon>
-                                    Odhlásit se
-                                </v-btn>
-                            </v-list-item>
-                        </v-list>
-                    </v-menu>
+						<v-list>
+							<v-list-item>
+								<v-btn variant="text" class="tw-w-full" @click="doLogout">
+									<v-icon>mdi-power</v-icon>
+									Odhlásit se
+								</v-btn>
+							</v-list-item>
+						</v-list>
+					</v-menu>
 				</div>
 			</template>
 		</v-navigation-drawer>
@@ -66,20 +70,21 @@
 
 <script setup>
 import { ref } from 'vue';
-import {useUserStore} from "@/stores/UserStore.js";
-import router from "@/router/index.js";
+import { useUserStore } from '@/stores/UserStore.js';
+import router from '@/router/index.js';
 
 const isSmallScreen = ref(window.innerWidth < 960);
 const store = useUserStore();
-const name = sessionStorage.getItem('name');
+const first_name = sessionStorage.getItem('first_name');
+const last_name = sessionStorage.getItem('last_name');
 
 window.addEventListener('resize', () => {
 	isSmallScreen.value = window.innerWidth < 960;
 });
 
 async function doLogout() {
-    await store.logout();
-    await router.push({name: 'login'});
+	await store.logout();
+	await router.push({ name: 'login' });
 }
 </script>
 

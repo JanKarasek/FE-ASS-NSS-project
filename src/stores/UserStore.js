@@ -1,9 +1,8 @@
 import { defineStore } from 'pinia';
 import axios from 'axios';
-import config from "@/config.js";
+import config from '@/config.js';
 
 export const useUserStore = defineStore('user', {
-
 	state: () => ({
 		token: null,
 		error: null,
@@ -35,7 +34,8 @@ export const useUserStore = defineStore('user', {
 				// nastavení hlavičky Authorization pro všechny HTTP požadavky odeslané pomocí Axios
 				// axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.token;
 				localStorage.setItem('token', this.token);
-				sessionStorage.setItem('name', response.data.firstName + ' ' + response.data.lastName);
+				sessionStorage.setItem('first_name', response.data.firstName);
+				sessionStorage.setItem('last_name', response.data.lastName);
 
 				this.error = null;
 				this.isLoggedIn = true;
@@ -53,9 +53,7 @@ export const useUserStore = defineStore('user', {
 
 		async fetchUsers() {
 			try {
-				const response = await axios.get(
-					config.backendUrl + '/users',
-				);
+				const response = await axios.get(config.backendUrl + '/users');
 				this.users = response.data;
 				this.error = null;
 			} catch (error) {
@@ -65,10 +63,7 @@ export const useUserStore = defineStore('user', {
 
 		async addUser(data) {
 			try {
-				const response = await axios.put(
-					config.backendUrl + '/users',
-					data,
-				);
+				const response = await axios.post(config.backendUrl + '/users', data);
 				this.user = response.data;
 				this.error = null;
 			} catch (error) {
