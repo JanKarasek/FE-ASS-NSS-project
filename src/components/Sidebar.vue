@@ -44,7 +44,7 @@
                     <v-menu open-on-hover location=top>
                         <template v-slot:activator="{ props }">
                             <v-btn class="tw-w-full" variant="text" v-bind="props" prepend-icon="mdi-account-circle-outline">
-                                Miroslav Jaroš
+                                {{ name }}
                             </v-btn>
 
                         </template>
@@ -71,6 +71,7 @@ import router from "@/router/index.js";
 
 const isSmallScreen = ref(window.innerWidth < 960);
 const store = useUserStore();
+const name = sessionStorage.getItem('name');
 
 window.addEventListener('resize', () => {
 	isSmallScreen.value = window.innerWidth < 960;

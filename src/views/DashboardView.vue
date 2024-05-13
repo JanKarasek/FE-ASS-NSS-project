@@ -10,7 +10,7 @@
 			<v-container>
 				<v-row>
 					<v-col>
-						<div class="tw-text-2xl">Dobré ráno, Jan.</div>
+						<div class="tw-text-2xl">Dobré ráno, {{ name }}.</div>
 					</v-col>
 				</v-row>
 				<v-row align="start" justify="start">
@@ -144,6 +144,7 @@ const measurementDuration = ref(measurementsConfig.value.lengthOfAE);
 const rgbCameraChecked = ref(measurementsConfig.value.rgbCamera);
 const selectedSensorCount = ref(measurementsConfig.value.numberOfSensors);
 const rgbCameraSensors = ref([1, 2, 3, 4, 5, 6]);
+const name = ref(sessionStorage.getItem('name'));
 
 onMounted(async () => {
 	store.fetchLatestMeasurements();

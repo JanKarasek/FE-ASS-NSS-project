@@ -35,6 +35,7 @@ export const useUserStore = defineStore('user', {
 				// nastavení hlavičky Authorization pro všechny HTTP požadavky odeslané pomocí Axios
 				// axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.token;
 				localStorage.setItem('token', this.token);
+				sessionStorage.setItem('name', response.data.firstName + ' ' + response.data.lastName);
 
 				this.error = null;
 				this.isLoggedIn = true;
