@@ -132,6 +132,7 @@ import MeasurementWidget from '@/components/measurements/MeasurementWidget.vue';
 import MeasurementSettings from '@/components/measurements/MeasurementSettings.vue';
 import Error from '../components/Error.vue';
 import { formatDateMinutes } from '../utils';
+import moment from 'moment';
 
 const store = useMeasurementsStore();
 const loading = ref(true);
@@ -176,15 +177,16 @@ const showSettings = ref(false);
 
 function updateConfig() {
 	try {
-		const currentTime = new Date().toISOString();
+		const currentTime = moment().local().toISOString();
 		const data = {
 			measurementFrequency: 60,
-			firstMeasurement: currentTime.value,
+			firstMeasurement: currentTime,
 			rgbCamera: rgbCameraChecked.value,
 			multispectralCamera: multispectralCameraChecked.value,
 			numberOfSensors: selectedSensorCount.value,
 			lengthOfAE: Number(measurementDuration.value),
 		};
+
 		store.updateMeasurementConfig(data);
 	} catch (error) {
 		store.error = error.message;

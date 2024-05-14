@@ -115,7 +115,6 @@ onMounted(async () => {
 
 function updateConfig() {
 	try {
-		console.log(measurementFrequency.value);
 		const data = {
 			measurementFrequency: measurementFrequency.value,
 			firstMeasurement: measurementDate.value,
