@@ -23,21 +23,13 @@ export default {
 	name: 'LoadingButton',
 
 	props: {
+        loading: Boolean,
 		text: String,
 		loadingText: String,
 		size: String,
 	},
 
-	data() {
-		return {
-			loading: false,
-		};
-	},
-
 	methods: {
-		onClick() {
-			this.loading = true;
-		},
 		setLoadingState(newState) {
 			this.loading = newState;
 		},

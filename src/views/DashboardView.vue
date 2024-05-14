@@ -47,6 +47,7 @@
 
 								<v-col class="tw-flex tw-justify-end">
 									<LoadingButton
+                                        :loading="loadingButton"
 										text="Zahájit měření"
 										loading-text="Probíhá měření"
 										size="large"
@@ -133,6 +134,7 @@ import MeasurementSettings from '@/components/measurements/MeasurementSettings.v
 import Error from '../components/Error.vue';
 import { formatDateMinutes } from '../utils';
 import moment from 'moment';
+import loadingButton from "@/components/button/LoadingButton.vue";
 
 const store = useMeasurementsStore();
 const loading = ref(true);
@@ -148,7 +150,7 @@ const rgbCameraChecked = ref(measurementsConfig.value.rgbCamera);
 const selectedSensorCount = ref(measurementsConfig.value.numberOfSensors);
 const rgbCameraSensors = ref([1, 2, 3, 4, 5, 6]);
 const first_name = ref(sessionStorage.getItem('first_name'));
-
+const loadingButton = ref(false);
 onMounted(async () => {
 	store.fetchLatestMeasurements();
 
@@ -176,6 +178,7 @@ const headers = [
 const showSettings = ref(false);
 
 function updateConfig() {
+    loadingButton.value = true;
 	try {
 		const currentTime = moment().local().toISOString();
 		const data = {
