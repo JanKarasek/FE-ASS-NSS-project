@@ -187,7 +187,7 @@ function updateConfig() {
 			rgbCamera: rgbCameraChecked.value,
 			multispectralCamera: multispectralCameraChecked.value,
 			numberOfSensors: selectedSensorCount.value,
-			lengthOfAE: Number(measurementDuration.value),
+			lengthOfAE: measurementDuration.value,
 		};
 		store.updateMeasurementConfig(data);
 

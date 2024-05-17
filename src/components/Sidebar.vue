@@ -4,7 +4,7 @@
 			<v-list-item-media>
 				<img
 					v-if="!isSmallScreen"
-					src="@/assets/logo_en.png"
+					src="@/assets/logo.jpg"
 					alt="Logo"
 					class="logo-default"
 					height="64px"
@@ -19,23 +19,23 @@
 			<v-list>
 				<v-list-item
 					prepend-icon="mdi-view-dashboard-outline"
-					title="Dashboard"
+					title="Přehled"
 					:to="{ name: 'dashboard' }"
 				></v-list-item>
 				<v-list-item
 					prepend-icon="mdi-history"
-					title="History"
+					title="Historie"
 					:to="{ name: 'history' }"
 				></v-list-item>
 				<v-list-item
 					prepend-icon="mdi-chart-line"
-					title="Measurements"
+					title="Měření"
 					:to="{ name: 'measurements' }"
 				>
 				</v-list-item>
 				<v-list-item
 					prepend-icon="mdi-cog-outline"
-					title="Settings"
+					title="Nastavení"
 					:to="{ name: 'settings' }"
 				></v-list-item>
 			</v-list>
