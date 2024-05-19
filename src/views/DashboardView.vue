@@ -110,7 +110,7 @@
 									<td>
 										<PrimaryButton
 											text="Stáhnout"
-											@click="downloadData(item.dateTime)"
+											@click="downloadData(item)"
 										/>
 									</td>
 								</tr>
@@ -221,6 +221,15 @@ function toggleSettings() {
 }
 
 const downloadData = (item) => {
+	const data = JSON.stringify(item)
+    const blob = new Blob([data], {type: 'text/plain'})
+    const e = document.createEvent('MouseEvents'),
+    a = document.createElement('a');
+    a.download = Date.now().toString() + ".json";
+    a.href = window.URL.createObjectURL(blob);
+    a.dataset.downloadurl = ['text/json', a.download, a.href].join(':');
+    e.initEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+    a.dispatchEvent(e);
 	console.log('Stahuji data pro', item);
 };
 
