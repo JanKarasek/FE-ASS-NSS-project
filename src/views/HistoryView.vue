@@ -1,7 +1,11 @@
 <template>
 	<v-app>
 		<v-main>
-			<error v-if="store.error" :text="store.error" @hide="store.clearError()"></error>
+			<error
+				v-if="store.error"
+				:text="store.error"
+				@hide="store.clearError()"
+			></error>
 			<v-container>
 				<v-row>
 					<v-col>
@@ -10,16 +14,24 @@
 				</v-row>
 				<v-row>
 					<v-col>
-						<DateTimePickerRange v-model:startDate="defaultStartDate" v-model:endDate="defaultEndDate" />
+						<DateTimePickerRange
+							v-model:startDate="defaultStartDate"
+							v-model:endDate="defaultEndDate"
+						/>
 					</v-col>
 				</v-row>
 
 				<v-row>
 					<v-col>
-						<v-data-table :headers="headers" class="elevation-1" title="Poslední měření">
+						<v-data-table
+							:headers="headers"
+							class="elevation-1"
+							title="Poslední měření"
+						>
 							<template v-slot:top>
 								<v-toolbar flat dense class="tw-bg-white">
-									<v-toolbar-title>Měření v intervalu
+									<v-toolbar-title
+										>Měření v intervalu
 										{{ moment(defaultStartDate).format('DD.MM.YYYY HH:mm:ss') }}
 										- {{ moment(defaultEndDate).format('DD.MM.YYYY HH:mm:ss') }}
 									</v-toolbar-title>
@@ -41,16 +53,23 @@
 									<td>{{ item.multispectralCamera ? 'Ano' : 'Ne' }}</td>
 									<td>{{ item.scheduled ? 'Ano' : 'Ne' }}</td>
 									<td>
-										<PrimaryButton text="Stáhnout"
-											@click="downloadData(item)" />
+										<PrimaryButton
+											text="Stáhnout"
+											@click="downloadData(item.id)"
+										/>
 									</td>
 								</tr>
 							</tbody>
 							<template v-slot:bottom> </template>
 						</v-data-table>
 						<div class="text-center pt-2">
-							<v-pagination v-model="page" :length="pageCount" :total-visible="totalVisible"
-								prev-icon="mdi-chevron-left" next-icon="mdi-chevron-right"></v-pagination>
+							<v-pagination
+								v-model="page"
+								:length="pageCount"
+								:total-visible="totalVisible"
+								prev-icon="mdi-chevron-left"
+								next-icon="mdi-chevron-right"
+							></v-pagination>
 							<div class="tw-text-dark-grey tw-text-xs">{{ rangeText }}</div>
 						</div>
 					</v-col>
@@ -124,15 +143,31 @@ watch([defaultStartDate, defaultEndDate], () => {
 	store.fetchMeasurementHistory(formattedStartDate, formattedEndDate);
 });
 
-const downloadData = (item) => {
-	const data = JSON.stringify(item)
-	const blob = new Blob([data], { type: 'text/plain' })
+const downloadData = async (item) => {
+	const data = JSON.stringify(item);
+	const blob = await store.downloadMeasurementZip(item);
 	const e = document.createEvent('MouseEvents'),
 		a = document.createElement('a');
-	a.download = Date.now().toString() + ".json";
+	a.download = Date.now().toString() + '.zip';
 	a.href = window.URL.createObjectURL(blob);
-	a.dataset.downloadurl = ['text/json', a.download, a.href].join(':');
-	e.initEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+	a.dataset.downloadurl = ['application/zip', a.download, a.href].join(':');
+	e.initEvent(
+		'click',
+		true,
+		false,
+		window,
+		0,
+		0,
+		0,
+		0,
+		0,
+		false,
+		false,
+		false,
+		false,
+		0,
+		null,
+	);
 	a.dispatchEvent(e);
 	console.log('Stahuji data pro', item);
 };
