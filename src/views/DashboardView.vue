@@ -110,7 +110,7 @@
 									<td>
 										<PrimaryButton
 											text="Stáhnout"
-											@click="downloadData(item)"
+											@click="downloadData(item.id)"
 										/>
 									</td>
 								</tr>
@@ -220,16 +220,32 @@ function toggleSettings() {
 	showSettings.value = !showSettings.value;
 }
 
-const downloadData = (item) => {
-	const data = JSON.stringify(item)
-    const blob = new Blob([data], {type: 'text/plain'})
-    const e = document.createEvent('MouseEvents'),
-    a = document.createElement('a');
-    a.download = Date.now().toString() + ".json";
-    a.href = window.URL.createObjectURL(blob);
-    a.dataset.downloadurl = ['text/json', a.download, a.href].join(':');
-    e.initEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-    a.dispatchEvent(e);
+const downloadData = async (item) => {
+	const data = JSON.stringify(item);
+	const blob = await store.downloadMeasurementZip(item);
+	const e = document.createEvent('MouseEvents'),
+		a = document.createElement('a');
+	a.download = Date.now().toString() + '.zip';
+	a.href = window.URL.createObjectURL(blob);
+	a.dataset.downloadurl = ['application/zip', a.download, a.href].join(':');
+	e.initEvent(
+		'click',
+		true,
+		false,
+		window,
+		0,
+		0,
+		0,
+		0,
+		0,
+		false,
+		false,
+		false,
+		false,
+		0,
+		null,
+	);
+	a.dispatchEvent(e);
 	console.log('Stahuji data pro', item);
 };
 

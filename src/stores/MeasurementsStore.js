@@ -17,6 +17,28 @@ export const useMeasurementsStore = defineStore('measurements', {
 	getters: {},
 
 	actions: {
+		async fetchMeasurementsData(measurementId) {
+			try {
+				const reposnse = await axios.get(
+					config.backendUrl + '/measurements/' + measurementId,
+				);
+			} catch (error) {
+				this.error = 'Cannot get measurements data ' + error;
+			}
+		},
+		async downloadMeasurementZip(measurementId) {
+			try {
+				const response = await axios.get(
+					`${config.backendUrl}/measurements/${measurementId}`,
+					{
+						responseType: 'blob',
+					},
+				);
+				return new Blob([response.data], { type: 'application/zip' });
+			} catch (error) {
+				this.error = 'Cannot download measurement ZIP ' + error;
+			}
+		},
 		async fetchManualMeasurementConfig() {
 			try {
 				const response = await axios.get(
@@ -54,6 +76,7 @@ export const useMeasurementsStore = defineStore('measurements', {
 				);
 				this.measurementHistory = response.data;
 				this.error = null;
+				await this.downloadMeasurementZip(1);
 			} catch (error) {
 				this.error = 'Cannot get measurement history ' + error;
 			}
